@@ -1,25 +1,24 @@
 package com.example.demo.service;
 
-import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
+import com.example.demo.model.Project;
 import com.example.demo.model.Supervisor;
 import com.example.demo.repository.CourseRepository;
-import com.example.demo.repository.SupervisorRepository;
-
-import com.example.demo.model.Project;
 import com.example.demo.repository.ProjectRepository;
-import java.util.Optional;
+import com.example.demo.repository.SupervisorRepository;
 
 @Service
 public class ProjectService {
@@ -44,6 +43,7 @@ public class ProjectService {
     public Project save(Project project) {
         return projectRepository.save(project);
     }
+
     public Project addProject(Project project,int courseId, int supervisorId) throws IOException {      
         Optional<Course> course = courseRepository.findById(courseId); 
         Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
@@ -53,11 +53,10 @@ public class ProjectService {
         }else{
             throw new RuntimeException("Course or Supervisor not found");
         }    
-              
-        
         return projectRepository.save(project);       
                 
     }
+    
     public Project updateProject(Project project, int id) throws IOException {
         Project existingProject = projectRepository.findById(id).orElse(null);
         existingProject.setName(project.getName());
