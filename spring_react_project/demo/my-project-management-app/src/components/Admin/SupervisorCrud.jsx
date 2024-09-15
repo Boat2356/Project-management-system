@@ -100,8 +100,9 @@ const SupervisorCrud = () => {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };    
 
     return (
         <div className="container mt-5">
@@ -151,10 +152,10 @@ const SupervisorCrud = () => {
                 </tbody>
             </Table>
 
-            {/* Course Modal */}
+            {/* Supervisor Modal */}
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{isEdit ? 'Edit Course' : 'Add Course'}</Modal.Title>
+                    <Modal.Title>{isEdit ? 'Edit Supervisor' : 'Add Supervisor'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -173,7 +174,7 @@ const SupervisorCrud = () => {
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="description"
+                                name="email"
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Enter supervisor email"
@@ -202,7 +203,7 @@ const SupervisorCrud = () => {
                     <Modal.Title>Confirm {actionType.charAt(0).toUpperCase() + actionType.slice(1)}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to {actionType} this course?
+                    Are you sure you want to {actionType} this supervisor?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseConfirmModal} disabled={isLoading}>
