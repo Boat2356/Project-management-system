@@ -210,7 +210,7 @@ const SupervisorCrud = () => {
                     </Button>
                     <Button
                         variant={actionType === 'delete' ? 'danger' : 'primary'}
-                        onClick={actionType === 'delete' ? handleDeleteCourse : () => {
+                        onClick={actionType === 'delete' ? handleDeleteSupervisor : () => {
                             handleCloseConfirmModal();
                             actionType === 'add' ? handleAddSupervisor() : handleUpdateSupervisor();
                         }}
