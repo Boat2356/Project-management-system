@@ -5,6 +5,7 @@ import UserPage from '../pages/User/UserPage';
 import ProjectCrud from '../pages/Admin/ProjectPage';
 import CourseCrud from '../pages/Admin/CoursePage';
 import SupervisorCrud from '../pages/Admin/SupervisorPage';
+import UserSearchPage from '../pages/User/UserSearchPage';
 function AppRouter(){
   return (
     <Router>           
@@ -14,7 +15,7 @@ function AppRouter(){
             <Route path="/admin/course-crud" element = {<CourseCrud />} />
             <Route path="/admin/supervisor-crud" element = {<SupervisorCrud />} />
             <Route path="/user" element = {<UserPage />} />                    
-            
+            <Route path="/user/search" element = {<UserSearchPage />} />    
         </Routes>   
     </Router>
   );
