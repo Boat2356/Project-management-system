@@ -20,3 +20,13 @@
     font-weight: 600;
     font-style: normal;
 }
+
+.s-link.active {
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมนู active */
+    font-weight: bold; /* ทำให้ข้อความหนาขึ้น */
+    border-left: 4px solid #007bff; /* ใส่ขอบซ้ายเพื่อบอกว่าเมนูนี้ active */
+}
+
+.s-link:not(.active):hover {
+    background-color: #f0f0f0; /* สีพื้นหลังเมื่อ hover */
+}

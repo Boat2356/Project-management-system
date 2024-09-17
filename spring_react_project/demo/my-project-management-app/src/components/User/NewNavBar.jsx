@@ -7,10 +7,10 @@ import Navbar from 'react-bootstrap/Navbar';
 const NawNavBar = () => {
     return (
         <div className=''>
-            <Navbar expand="lg" className="p-3 mb-2 bg-white text-dark shadow-sm ">
+            <Navbar expand="lg" className="p-3 bg-white text-dark shadow-sm ">
                 <Container>
                     <div>
-                        <Navbar.Brand href="#"><span className='text-primary fw-bold fs-3'>S</span> <span className='fw-bold'>- project</span></Navbar.Brand>
+                        <Navbar.Brand href="/home-page"><span className='text-primary fw-bold fs-3'>S</span> <span className='fw-bold'>- project</span></Navbar.Brand>
                     </div>
 
                     <div>
@@ -18,7 +18,7 @@ const NawNavBar = () => {
 
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className=''>
-                                <Nav.Link href="#" className='prompt-semibold pt-3 fw-bold'>หน้าหลัก</Nav.Link>
+                                <Nav.Link href="/home-page" className='prompt-semibold pt-3 fw-bold'>หน้าหลัก</Nav.Link>
                                 <Nav.Link href="#" className='prompt-semibold pt-3 fw-bold'>เข้าสู่ระบบ</Nav.Link>
 
                             </Nav>
