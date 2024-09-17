@@ -43,6 +43,10 @@ public class AuthenticationService {
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
+    // Retrieve all users
+    public Iterable<User> getAllUsers() {
+        return repository.findAll();
+    }
 
      // Retrieve user by ID
      public User getUserById(int id) {
