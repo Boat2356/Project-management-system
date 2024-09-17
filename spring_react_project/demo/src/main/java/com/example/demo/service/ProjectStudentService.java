@@ -4,16 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Project;
 import com.example.demo.model.ProjectStudent;
-import com.example.demo.model.Student;
+import com.example.demo.model.User;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.repository.ProjectStudentRepository;
-import com.example.demo.repository.StudentRepository;
+import com.example.demo.repository.UserRepository;
 
 @Service
 public class ProjectStudentService {    
@@ -21,22 +20,22 @@ public class ProjectStudentService {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ProjectStudentRepository projectStudentRepository;
 
-    public ProjectStudent addProjectStudent(int projectId, int studentId) {
+    public ProjectStudent addProjectStudent(int projectId, int userId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        Optional<User> userOpt = userRepository.findById(userId);
 
-        if (projectOpt.isPresent() && studentOpt.isPresent()) {
+        if (projectOpt.isPresent() && userOpt.isPresent()) {
             Project project = projectOpt.get();
-            Student student = studentOpt.get();
+            User user = userOpt.get();
 
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setProject(project);
-            projectStudent.setStudent(student);
+            projectStudent.setUser(user);
             projectStudent.setSubmissionDate(LocalDateTime.now());
 
             return projectStudentRepository.save(projectStudent);
@@ -52,15 +51,23 @@ public class ProjectStudentService {
     public Set<ProjectStudent> getProjectStudentsByProjectId(int projectId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
         if (projectOpt.isPresent()) {
-            return projectOpt.get().getProjectStudents();
+            return projectOpt.get().getProjectStudents().stream().map(
+                projectStudent -> {
+                    ProjectStudent newProjectStudent = new ProjectStudent();
+                    newProjectStudent.setUser(projectStudent.getUser());
+                    newProjectStudent.setId(projectStudent.getId());
+                    newProjectStudent.setSubmissionDate(projectStudent.getSubmissionDate());                 
+                    return newProjectStudent;
+                }
+            ).collect(Collectors.toSet());
         } else {
             throw new RuntimeException("Project not found");
         }
     }
-    public Set<ProjectStudent> getProjectStudentsByStudentId(int studentId) {
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
-        if (studentOpt.isPresent()) {
-            return studentOpt.get().getProjectStudents();
+    public Set<ProjectStudent> getProjectStudentsByStudentId(int userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            return userOpt.get().getProjectStudents();
         } else {
             throw new RuntimeException("Student not found");
         }

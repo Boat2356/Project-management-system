@@ -1,7 +1,9 @@
 package com.example.demo.model;
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.Map;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -15,6 +17,8 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
 
 @Entity
 @Table(name = "project")
@@ -55,6 +59,18 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
+
+    /* 
+    @Transient
+    private List<Map<String, Object>> users;
+
+    public List<Map<String, Object>> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<Map<String, Object>> users) {
+        this.users = users;
+    }*/
 
     public String getProposalfilename() {
         return proposalfilename;

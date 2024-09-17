@@ -18,14 +18,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
 import com.example.demo.model.Project;
+import com.example.demo.model.Supervisor;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.ProjectService;
 import com.example.demo.service.SupervisorService;
+import com.example.demo.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -36,6 +43,8 @@ public class ProjectController {
     private CourseService courseService;
     @Autowired
     private SupervisorService supervisorService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/projects")
     public ResponseEntity <List<Project>> getAllProjects() {
@@ -55,6 +64,8 @@ public class ProjectController {
         return ResponseEntity.ok().body(supervisorService.getSupervisorById(supervisorId).getProjects()
         .stream().filter(project -> project.getId() == projectId).findFirst().orElse(null));
     }
+
+    /* 
     @PostMapping(value = "/course/{courseId}/supervisor/{supervisorId}/projects")
     public ResponseEntity <Project> addProject(@RequestBody Project project,@PathVariable int courseId, @PathVariable int supervisorId) throws IOException {
         try {            
@@ -78,8 +89,40 @@ public class ProjectController {
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }*/
+    @PostMapping(value = "/projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Project createProject(@RequestPart ("project") Project project,
+                                 @RequestParam ("courseId") int courseId,
+                                 @RequestParam ("supervisorId") int supervisorId,
+                                 @RequestParam ("userIds") List<Integer> userIds,
+                                 @RequestParam (value = "proposalFile", required = false) MultipartFile proposalFile,
+                                 @RequestParam (value = "fullDocumentFile", required = false) MultipartFile fullDocumentFile,
+                                 @RequestParam (value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
+        return projectService.createProjectWithFiles(project, courseId, supervisorId, userIds, 
+                                                     proposalFile, fullDocumentFile, imageFile);
     }
 
+    @PutMapping(value = "/projects/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Project> updateProject(@PathVariable int projectId,
+                                                @RequestPart("project") Project project,
+                                                @RequestParam("courseId") int courseId,
+                                                @RequestParam("supervisorId") int supervisorId,
+                                                @RequestParam("userIds") List<Integer> userIds,
+                                                @RequestParam(value = "proposalFile", required = false) MultipartFile proposalFile,
+                                                @RequestParam(value = "fullDocumentFile", required = false) MultipartFile fullDocumentFile,
+                                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        
+        try {
+            Project updatedProject = projectService.updateProjectWithFiles(project, projectId, courseId, supervisorId, userIds,
+                                                                          proposalFile, fullDocumentFile, imageFile);
+            return ResponseEntity.ok(updatedProject);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);        
+        }
+    }                                                     
+    
     @DeleteMapping("/projects/{id}")
     public ResponseEntity <String> deleteProjectById(@PathVariable int id) {
         projectService.deleteProjectById(id);
