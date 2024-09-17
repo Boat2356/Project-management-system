@@ -14,12 +14,21 @@ import java.util.List;
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
 import com.example.demo.model.Supervisor;
+import com.example.demo.model.User;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.SupervisorRepository;
-
+import com.example.demo.repository.UserRepository;
+import java.time.LocalDateTime;
+import jakarta.persistence.EntityNotFoundException;
 import com.example.demo.model.Project;
+import com.example.demo.model.ProjectStudent;
 import com.example.demo.repository.ProjectRepository;
+import com.example.demo.repository.ProjectStudentRepository;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -29,6 +38,10 @@ public class ProjectService {
     private CourseRepository courseRepository;
     @Autowired
     private SupervisorRepository supervisorRepository;    
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ProjectStudentRepository projectStudentRepository;
 
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
@@ -44,6 +57,7 @@ public class ProjectService {
     public Project save(Project project) {
         return projectRepository.save(project);
     }
+    /* ใช้งานได้แต่ติดไว้ก่อน
     public Project addProject(Project project,int courseId, int supervisorId) throws IOException {      
         Optional<Course> course = courseRepository.findById(courseId); 
         Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
@@ -57,7 +71,7 @@ public class ProjectService {
         
         return projectRepository.save(project);       
                 
-    }
+    } 
     public Project updateProject(Project project, int id) throws IOException {
         Project existingProject = projectRepository.findById(id).orElse(null);
         existingProject.setName(project.getName());
@@ -75,7 +89,122 @@ public class ProjectService {
         }              
         return projectRepository.save(existingProject);
         
+    }*/
+    public Project createProjectWithFiles(Project project, int courseId, int supervisorId, 
+                                          List<Integer> userIds, MultipartFile proposalFile, 
+                                          MultipartFile fullDocumentFile, MultipartFile imageFile) 
+                                          throws IOException {
+        Course course = courseRepository.findById(courseId).orElseThrow(null);
+        Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);          
+        project.setCourse(course);
+        project.setSupervisor(supervisor);        
+        if (proposalFile != null && !proposalFile.isEmpty()) {
+            project.setProposalFile(proposalFile.getBytes());
+            project.setProposalfilename(proposalFile.getOriginalFilename());
+        }
+        
+        if (fullDocumentFile != null && !fullDocumentFile.isEmpty()) {
+            project.setFulldocumentFile(fullDocumentFile.getBytes());
+            project.setFulldocumentfilename(fullDocumentFile.getOriginalFilename());
+        }
+        
+        if (imageFile != null && !imageFile.isEmpty()) {
+            project.setImage(imageFile.getBytes());
+            project.setImagefilename(imageFile.getOriginalFilename());
+        }
+        
+        Project savedProject = projectRepository.save(project);
+        
+        for (Integer userId : userIds) {
+            User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            ProjectStudent projectStudent = new ProjectStudent();
+            projectStudent.setProject(savedProject);
+            projectStudent.setUser(user);
+            projectStudent.setSubmissionDate(LocalDateTime.now()); // Set a default or required date    
+            projectStudentRepository.save(projectStudent); // Save each ProjectStudent
+        }        
+        return savedProject;
     }
+
+    public Project updateProjectWithFiles(Project project, int id, int courseId, int supervisorId, 
+                                          List<Integer> userIds, MultipartFile proposalFile, 
+                                          MultipartFile fullDocumentFile, MultipartFile imageFile) 
+                                          throws IOException {
+        Project existingProject = projectRepository.findById(id).orElseThrow(null);
+        existingProject.setName(project.getName());
+        existingProject.setDescription(project.getDescription());
+        existingProject.setisapproved(project.isapproved());
+        existingProject.setYear(project.getYear());
+        existingProject.setSemester(project.getSemester());
+        Course course = courseRepository.findById(courseId).orElseThrow(null);
+        Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);
+        existingProject.setCourse(course);
+        existingProject.setSupervisor(supervisor);
+        
+        if (proposalFile != null && !proposalFile.isEmpty()) {
+            existingProject.setProposalFile(proposalFile.getBytes());
+            existingProject.setProposalfilename(proposalFile.getOriginalFilename());
+        }
+        
+        if (fullDocumentFile != null && !fullDocumentFile.isEmpty()) {
+            existingProject.setFulldocumentFile(fullDocumentFile.getBytes());
+            existingProject.setFulldocumentfilename(fullDocumentFile.getOriginalFilename());
+        }
+        
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existingProject.setImage(imageFile.getBytes());
+            existingProject.setImagefilename(imageFile.getOriginalFilename());
+        }
+        
+        Project savedProject = projectRepository.save(existingProject);      
+        
+        // Get the current list of ProjectStudent associations
+    List<ProjectStudent> currentAssociations = projectStudentRepository.findByProjectId(id);
+    
+    // Create a set of new user IDs for quick lookup
+    Set<Integer> newUserIdSet = new HashSet<Integer>(userIds);
+    
+    // Determine users to be added and removed
+    Set<Integer> currentUserIds = currentAssociations.stream()
+                                                     .map(ps -> ps.getUser().getId())
+                                                     .collect(Collectors.toSet());
+    
+    // Users to be removed
+    Set<Integer> usersToRemove = currentUserIds.stream()
+                                               .filter(userId -> !newUserIdSet.contains(userId))
+                                               .collect(Collectors.toSet());
+    
+    // Users to be added
+    Set<Integer> usersToAdd = newUserIdSet.stream()
+                                              .filter(newId -> !currentUserIds.contains(newId))
+                                              .collect(Collectors.toSet());
+    
+    // Remove users that are no longer in the list
+    for (Integer userId : usersToRemove) {
+        ProjectStudent projectStudent = currentAssociations.stream()
+            .filter(ps -> Integer.valueOf(ps.getUser().getId()).equals(userId))
+            .findFirst()
+            .orElse(null);
+        if (projectStudent != null) {
+            projectStudentRepository.delete(projectStudent);
+        }
+    }
+    
+    // Add new users
+    for (Integer userId : usersToAdd) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        ProjectStudent projectStudent = new ProjectStudent();
+        projectStudent.setProject(savedProject);
+        projectStudent.setUser(user);
+        projectStudent.setSubmissionDate(LocalDateTime.now()); // Set a default or required date    
+        projectStudentRepository.save(projectStudent); // Save each ProjectStudent
+    }
+             
+        return savedProject;
+    }
+
+
+
     public void deleteProjectById(int id) {
         projectRepository.deleteById(id);        
     }
