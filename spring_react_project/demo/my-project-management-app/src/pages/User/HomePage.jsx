@@ -11,7 +11,6 @@ const HomePage = () => {
       <NewNavBar/>
       <Welcome/>
       <ProjectCard/>
-      <Footer/>
     </div>
   )
 }
