@@ -3,8 +3,7 @@ import { BsPersonFill,BsFillPencilFill,BsPlusCircleFill,BsBoxArrowRight  } from 
 import { FaBook } from "react-icons/fa";
 import { NavLink, useLocation } from "react-router-dom";
 
-import { Nav } from "react-bootstrap";
-const StdSideBar = () => {
+const AdminSidebar = () => {
     const location = useLocation(); // ใช้ hook เพื่อดู path ปัจจุบัน
 
     const isActive = (path) => location.pathname === path; // ตรวจสอบว่า path นั้น active หรือไม่
@@ -13,28 +12,35 @@ const StdSideBar = () => {
         <div className="sidebar-wrapper bg-white shadow p-3 " style={{  height: '120vh', }}>
             <Nav className='d-flex flex-column'>
                 <NavLink 
-                    to="/user/std-profile" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-profile') ? 'active' : ''}`}>
+                    to="/" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
                     <BsPersonFill className="fs-3 me-2" />
                     <span className="prompt-semibold text-black fs-6">บัญชีผู้ใช้</span>
                 </NavLink>
                 <NavLink 
-                    to="/user/std-edit-profile" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-edit-profile') ? 'active' : ''}`}>
+                    to="/" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
                     <BsFillPencilFill className="fs-3 me-2" />
                     <span className="prompt-semibold fs-6">แก้ไขบัญชี</span>
                 </NavLink>
+                
                 <NavLink 
-                    to="/user/std-add-project" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-add-project') ? 'active' : ''}`}>
-                    <BsPlusCircleFill className="fs-3 me-2" />
-                    <span className="prompt-semibold text-black fs-6">เพิ่มโปรเจค</span>
-                </NavLink>
-                <NavLink 
-                    to="/user/std-manage-project" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-manage-project') ? 'active' : ''}`}>
+                    to="/" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
                     <FaBook className="fs-3 me-2" />
                     <span className="prompt-semibold text-black fs-6">จัดการโปรเจค</span>
+                </NavLink>
+                <NavLink 
+                    to="/" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    <BsPlusCircleFill className="fs-3 me-2" />
+                    <span className="prompt-semibold text-black fs-6">จัดการวิชา</span>
+                </NavLink>
+                <NavLink 
+                    to="/" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    <BsPlusCircleFill className="fs-3 me-2" />
+                    <span className="prompt-semibold text-black fs-6">ข้อมูลอาจารย์ที่ปรึกษา</span>
                 </NavLink>
                 <NavLink 
                     to="/" 
@@ -47,4 +53,4 @@ const StdSideBar = () => {
     </div>
     );
 }
-export default StdSideBar;
+export default AdminSidebar;

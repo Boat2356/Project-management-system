@@ -6,10 +6,11 @@ import ProjectCrud from '../pages/Admin/ProjectPage';
 import CourseCrud from '../pages/Admin/CoursePage';
 import SupervisorCrud from '../pages/Admin/SupervisorPage';
 import HomePage from '../pages/User/HomePage';
-import StdProfile from '../pages/User/StdProfile'; 
-import EditProfile from '../pages/User/EditProfile';
-import StdAddProject from '../pages/User/StdAddProject';
-import StdManageProject from '../pages/User/StdManageProject';
+import StdProfilePage from '../pages/User/StdProfilePage';
+import StdEditProfilePage from '../pages/User/StdEditProfilePage';
+import StdAddProjectPage from '../pages/User/StdAddProjectPage';
+import StdManageProjectPage from '../pages/User/StdManageProjectPage';
+
 
 function AppRouter(){
   return (
@@ -21,10 +22,10 @@ function AppRouter(){
             <Route path="/admin/supervisor-crud" element = {<SupervisorCrud />} />
             <Route path="/user" element = {<UserPage />} />
             <Route path="/home-page" element = {<HomePage />} /> 
-            <Route path="/user/std-profile" element = {<StdProfile />} />  
-            <Route path="/user/edit-profile" element = {<EditProfile />} />
-            <Route path="/user/std-add-project" element = {<StdAddProject />} />  
-            <Route path="/user/std-manage-project" element = {<StdManageProject />} /> 
+            <Route path="/user/std-profile" element = {<StdProfilePage />} />  
+            <Route path="/user/std-edit-profile" element = {<StdEditProfilePage />} />
+            <Route path="/user/std-add-project" element = {<StdAddProjectPage />} />  
+            <Route path="/user/std-manage-project" element = {<StdManageProjectPage />} /> 
         </Routes>   
     </Router>
   );
