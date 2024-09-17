@@ -6,7 +6,7 @@ import ProjectCrud from '../pages/Admin/ProjectPage';
 import CourseCrud from '../pages/Admin/CoursePage';
 import SupervisorCrud from '../pages/Admin/SupervisorPage';
 
-import HomePage from '../components/User/HomePage';
+import HomePage from '../pages/User/HomePage';
 function AppRouter(){
   return (
     <Router>           
