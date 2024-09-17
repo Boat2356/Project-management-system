@@ -1,18 +1,20 @@
 package com.example.demo.service;
 
-import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
+import com.example.demo.model.Project;
 import com.example.demo.model.Supervisor;
 import com.example.demo.model.User;
 import com.example.demo.repository.CourseRepository;
@@ -67,8 +69,6 @@ public class ProjectService {
         }else{
             throw new RuntimeException("Course or Supervisor not found");
         }    
-              
-        
         return projectRepository.save(project);       
                 
     } 
