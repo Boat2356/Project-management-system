@@ -12,12 +12,16 @@ const ProjectCard = () => {
     ];
   
     const navigate = useNavigate();
-    
+
+    const handleSearchClick = () =>{
+      navigate("/search")
+    }
+
     return (
       <div className="container mt-5">
         
       <div>
-      <Button className='mt-4 prompt-regular' variant="primary">ค้นหาโปรเจค</Button>{' '}
+        <Button onClick={handleSearchClick} className='mt-4 prompt-regular' variant="primary">ค้นหาโปรเจค</Button>
       </div>
 
         <div className="row ">
