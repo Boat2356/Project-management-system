@@ -6,7 +6,7 @@ const SearchPage = () => {
     projectCode: "",
     academicYear: "",
     semester: "",
-    advisorName: "",
+    advisorName: ""
   });
 
   const handleInputChange = (e) => {

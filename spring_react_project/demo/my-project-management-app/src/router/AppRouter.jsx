@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminPage from '../pages/Admin/AdminPage';
-import UserPage from '../pages/User/UserPage';
 import ProjectCrud from '../pages/Admin/ProjectPage';
 import CourseCrud from '../pages/Admin/CoursePage';
 import SupervisorCrud from '../pages/Admin/SupervisorPage';
@@ -11,6 +10,8 @@ import StdEditProfilePage from '../pages/User/StdEditProfilePage';
 import StdAddProjectPage from '../pages/User/StdAddProjectPage';
 import StdManageProjectPage from '../pages/User/StdManageProjectPage';
 import AdminProfilePage from '../pages/Admin/AdminProfilePage';
+import SearchProjectPage from '../pages/User/SearchProjectPage';
+import SearchResultPage from '../pages/User/SearchResultPage';
 
 function AppRouter(){
   return (
@@ -26,7 +27,8 @@ function AppRouter(){
             <Route path="/user/std-add-project" element = {<StdAddProjectPage />} />  
             <Route path="/user/std-manage-project" element = {<StdManageProjectPage />} /> 
             <Route path="/admin/profile" element = {<AdminProfilePage />} />  
-            
+            <Route path="/search" element= {<SearchProjectPage/>}/>
+            <Route path="/results" element = {<SearchResultPage/>} />
         </Routes>   
     </Router>
   );

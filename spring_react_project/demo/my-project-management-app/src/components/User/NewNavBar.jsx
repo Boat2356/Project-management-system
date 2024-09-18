@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 // Nav Bar ตามที่ออกแบบ
-const NawNavBar = () => {
+const NewNavBar = () => {
     return (
         <div className=''>
             <Navbar expand="lg" className="p-3 bg-white text-dark shadow-sm ">
@@ -30,4 +30,4 @@ const NawNavBar = () => {
         </div>
     )
 }
-export default NawNavBar;
+export default NewNavBar;

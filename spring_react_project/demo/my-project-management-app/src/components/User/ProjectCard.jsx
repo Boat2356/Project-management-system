@@ -1,15 +1,18 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 //ของหน้า home page
 const ProjectCard = () => {
     const projects = [
       { id: 1, name: 'Project A', description: 'Description A' },
       { id: 2, name: 'Project B', description: 'Description B' },
-      { id: 3, name: 'Project C', description: 'Description B' },
+      { id: 3, name: 'Project C', description: 'Description C' },
       { id: 4, name: 'Project A', description: 'Description A' },
     ];
   
+    const navigate = useNavigate();
+    
     return (
       <div className="container mt-5">
         
