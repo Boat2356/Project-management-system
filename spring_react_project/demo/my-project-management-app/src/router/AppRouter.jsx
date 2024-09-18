@@ -17,6 +17,7 @@ import AdminManageAdvisorPage from '../pages/Admin/AdminManageAdvisorPage';
 import SearchProjectPage from '../pages/User/SearchProjectPage';
 import SearchResultPage from '../pages/User/SearchResultPage';
 import AdminProjectDetailPage from '../pages/Admin/AdminProjectDetailPage';
+import ProjectDetailPage from '../pages/User/ProjectDetailPage';
 function AppRouter(){
   return (
     <Router>           
@@ -33,6 +34,7 @@ function AppRouter(){
             <Route path="/admin/profile" element = {<AdminProfilePage />} />  
             <Route path="/search" element= {<SearchProjectPage/>}/>
             <Route path="/results" element = {<SearchResultPage/>} />
+            <Route path="//projects/:id" element = {<ProjectDetailPage/>} />
             <Route path="/admin/edit-profile" element = {<AdminEditProfilePage />} />  
             <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />  
             <Route path="/admin/manage-subject" element = {<AdminManageSubjectPage />} />  

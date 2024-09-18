@@ -17,6 +17,10 @@ const ProjectCard = () => {
       navigate("/search")
     }
 
+    const handleDetailClick = (id) => {
+      navigate(`/projects/${id}`);  // นำทางไปยัง URL ที่มี id ของโปรเจค
+  };
+
     return (
       <div className="container mt-5">
         
@@ -31,7 +35,7 @@ const ProjectCard = () => {
                 <Card.Body>
                   <Card.Title className='prompt-semibold'>{project.name}</Card.Title>
                   <Card.Text className='prompt-regular'>{project.description}</Card.Text>
-                  <Button className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
+                  <Button onClick={() => handleDetailClick(project.id)} className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
                 </Card.Body>
               </Card>
             </div>
