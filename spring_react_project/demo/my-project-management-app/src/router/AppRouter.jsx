@@ -20,13 +20,13 @@ function AppRouter(){
             <Route path="/admin/project-crud" element = {<ProjectCrud />} />
             <Route path="/admin/course-crud" element = {<CourseCrud />} />
             <Route path="/admin/supervisor-crud" element = {<SupervisorCrud />} />
-            <Route path="/user" element = {<UserPage />} />
             <Route path="/home-page" element = {<HomePage />} /> 
             <Route path="/user/std-profile" element = {<StdProfilePage />} />  
             <Route path="/user/std-edit-profile" element = {<StdEditProfilePage />} />
             <Route path="/user/std-add-project" element = {<StdAddProjectPage />} />  
             <Route path="/user/std-manage-project" element = {<StdManageProjectPage />} /> 
             <Route path="/admin/profile" element = {<AdminProfilePage />} />  
+            
         </Routes>   
     </Router>
   );
