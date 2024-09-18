@@ -1,7 +1,5 @@
 import { React, useState } from 'react'
 import { Button, Form, Table, Modal } from 'react-bootstrap';
-import NawNavBar from './NewNavBar';
-import StdSideBar from './StdSideBar';
 
 //จัดการโปรเจคสำหรับนักศึกษา
 const StdManageProject = () => {
@@ -28,10 +26,10 @@ const StdManageProject = () => {
             <Table bordered hover className='mt-4 '>
                 <thead >
                     <tr >
-                        <th className='prompt-semibold'>ชื่อโปรเจค</th>
-                        <th className='prompt-semibold'>รายวิชา</th>
-                        <th className='prompt-semibold'>สถานะ</th>
-                        <th className='prompt-semibold'>Action</th>
+                        <th className='prompt-semibold bg-body-tertiary'>ชื่อโปรเจค</th>
+                        <th className='prompt-semibold bg-body-tertiary'>รายวิชา</th>
+                        <th className='prompt-semibold bg-body-tertiary'>สถานะ</th>
+                        <th className='prompt-semibold bg-body-tertiary'>Action</th>
                     </tr>
                 </thead>
                 <tbody>

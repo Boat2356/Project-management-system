@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 
 const AdminProfile = () => {
   return (
-    <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '80rem', height: '13rem', }}>
+    <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '75rem', height: '13rem', }}>
             <Card.Body className='ms-5'>
 
                 <h3 className='prompt-semibold text-primary mb-4'>ข้อมูลผู้ดูแล</h3>

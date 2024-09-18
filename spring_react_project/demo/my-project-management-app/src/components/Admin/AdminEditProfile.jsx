@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 
 const AdminEditProfile = () => {
   return (
-    <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '80rem', height: '30rem', }}>
+    <Card className='mx-auto mt-4 shadow-sm p-4 ' style={{ width: '75rem', height: '30rem', }}>
             <Card.Body className='ms-5'>
 
                 <h3 className='prompt-semibold text-primary mb-4'>แก้ไขข้อมูลผู้ดูแล</h3>

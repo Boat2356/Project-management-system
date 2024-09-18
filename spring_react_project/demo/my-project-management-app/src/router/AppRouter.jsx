@@ -16,7 +16,7 @@ import AdminManageSubjectPage from '../pages/Admin/AdminManageSubjectPage';
 import AdminManageAdvisorPage from '../pages/Admin/AdminManageAdvisorPage';
 import SearchProjectPage from '../pages/User/SearchProjectPage';
 import SearchResultPage from '../pages/User/SearchResultPage';
-
+import AdminProjectDetailPage from '../pages/Admin/AdminProjectDetailPage';
 function AppRouter(){
   return (
     <Router>           
@@ -37,7 +37,7 @@ function AppRouter(){
             <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />  
             <Route path="/admin/manage-subject" element = {<AdminManageSubjectPage />} />  
             <Route path="/admin/manage-advisor" element = {<AdminManageAdvisorPage />} />  
-
+            <Route path="/admin/manage-project/project-detail" element = {<AdminProjectDetailPage />} /> 
         </Routes>   
     </Router>
   );

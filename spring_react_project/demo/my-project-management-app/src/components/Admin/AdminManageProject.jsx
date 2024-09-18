@@ -1,11 +1,17 @@
 import React from 'react'
-import { Button, Table} from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 const AdminManageProject = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate('/admin/manage-project/project-detail');  // กำหนด path ของหน้าใหม่ที่ต้องการ
+    }
     return (
 
-        <div className='mx-auto mt-4 ' style={{ width: '80rem' }}>
+        <div className='mx-auto mt-4 ' style={{ width: '75rem' }}>
             <h3 className='prompt-semibold text-primary mb-4'>จัดการโปรเจคนักศึกษา</h3>
 
             {/* <Form>
@@ -34,11 +40,13 @@ const AdminManageProject = () => {
                         <td className='prompt-regular'>Web development</td>
                         <td className='prompt-regular'>อนุมัติ</td>
                         <td>
-                            <Button className='prompt-regular me-2' variant='primary'>รายละเอียด</Button>
-                            <Button className='prompt-regular px-3' variant='danger'>ลบ</Button>
-                            
-                        </td>
 
+                            <Button className='prompt-regular me-2' variant='primary' onClick={handleNavigate}>
+                                รายละเอียด
+                            </Button>
+                            <Button className='prompt-regular px-3' variant='danger'>ลบ</Button>
+
+                        </td>
                     </tr>
                 </tbody>
             </Table>

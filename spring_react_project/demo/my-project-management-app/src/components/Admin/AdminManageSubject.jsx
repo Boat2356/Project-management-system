@@ -34,7 +34,7 @@ const AdminManageSubject = () => {
  
 
   return (
-<div className='mx-auto mt-4 ' style={{ width: '80rem' }}>
+<div className='mx-auto mt-4 ' style={{ width: '75rem' }}>
       <h3 className='prompt-semibold text-primary mb-4'>จัดการวิชา</h3>
       <Button className='prompt-regular px-3' variant='primary' onClick={handleShow}>
         เพิ่มวิชา
