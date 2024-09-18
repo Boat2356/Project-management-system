@@ -15,30 +15,30 @@ const EditProfile = () => {
                 <h3 className='prompt-semibold text-primary mb-4'>แก้ไขข้อมูลนักศึกษา</h3>
 
                 <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>รหัสนักศึกษา</Form.Label>
-                        <Form.Control type="email" placeholder="xxxxxxxxx-x" />
+                    <Form.Group className=" mb-3" controlId="formBasicEmail">
+                        <Form.Label className='prompt-semibold'>รหัสนักศึกษา</Form.Label>
+                        <Form.Control className='prompt-regular' type="email" placeholder="xxxxxxxxx-x" />
                     </Form.Group>
 
                     <div className='row'>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>ชื่อ</Form.Label>
-                            <Form.Control type="text" placeholder="ชื่อ" />
+                            <Form.Label className='prompt-semibold'>ชื่อ</Form.Label>
+                            <Form.Control className='prompt-regular' type="text" placeholder="ชื่อ" />
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>นามสกุล</Form.Label>
-                            <Form.Control type="text" placeholder="นามสกุล" />
+                            <Form.Label className='prompt-semibold'>นามสกุล</Form.Label>
+                            <Form.Control className='prompt-regular' type="text" placeholder="นามสกุล" />
                         </Form.Group>
                     </div>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>อีเมล</Form.Label>
-                        <Form.Control type="email" placeholder="name@email.com" />
+                        <Form.Label className='prompt-semibold'>อีเมล</Form.Label>
+                        <Form.Control className='prompt-regular' type="email" placeholder="name@email.com" />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Button className='prompt-regular' variant="primary" type="submit">
                         บันทึก
                     </Button>
                 </Form>

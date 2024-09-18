@@ -18,27 +18,27 @@ const AdminSidebar = () => {
                 </NavLink>
 
                 <NavLink 
-                    to="/" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    to="/admin/edit-profile" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/admin/edit-profile') ? 'active' : ''}`}>
                     <i className="bi bi-pencil-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold fs-6">แก้ไขบัญชี</span>
                 </NavLink>
                 
                 <NavLink 
-                    to="/" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    to="/admin/manage-project" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/admin/manage-project') ? 'active' : ''}`}>
                     <i className="bi bi-book-half fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">จัดการโปรเจค</span>
                 </NavLink>
                 <NavLink 
-                    to="/" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    to="/admin/manage-subject" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/admin/manage-subject') ? 'active' : ''}`}>
                     <i className="bi bi-file-earmark-text-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">จัดการวิชา</span>
                 </NavLink>
                 <NavLink 
-                    to="/" 
-                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/') ? 'active' : ''}`}>
+                    to="/admin/manage-advisor" 
+                    className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/admin/manage-advisor') ? 'active' : ''}`}>
                     <i className="bi bi-people-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">ข้อมูลอาจารย์ที่ปรึกษา</span>
                 </NavLink>

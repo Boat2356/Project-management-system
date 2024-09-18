@@ -10,6 +10,10 @@ import StdEditProfilePage from '../pages/User/StdEditProfilePage';
 import StdAddProjectPage from '../pages/User/StdAddProjectPage';
 import StdManageProjectPage from '../pages/User/StdManageProjectPage';
 import AdminProfilePage from '../pages/Admin/AdminProfilePage';
+import AdminEditProfilePage from '../pages/Admin/AdminEditProfilePage';
+import AdminManageProjectPage from '../pages/Admin/AdminManageProjectPage';
+import AdminManageSubjectPage from '../pages/Admin/AdminManageSubjectPage';
+import AdminManageAdvisorPage from '../pages/Admin/AdminManageAdvisorPage';
 import SearchProjectPage from '../pages/User/SearchProjectPage';
 import SearchResultPage from '../pages/User/SearchResultPage';
 
@@ -29,6 +33,11 @@ function AppRouter(){
             <Route path="/admin/profile" element = {<AdminProfilePage />} />  
             <Route path="/search" element= {<SearchProjectPage/>}/>
             <Route path="/results" element = {<SearchResultPage/>} />
+            <Route path="/admin/edit-profile" element = {<AdminEditProfilePage />} />  
+            <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />  
+            <Route path="/admin/manage-subject" element = {<AdminManageSubjectPage />} />  
+            <Route path="/admin/manage-advisor" element = {<AdminManageAdvisorPage />} />  
+
         </Routes>   
     </Router>
   );
