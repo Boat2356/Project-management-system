@@ -1,17 +1,18 @@
 import React from 'react'
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import NawNavBar from '../../components/User/NewNavBar';
-import AdminDashboard from '../../components/Admin/AdminDashboard';
+import AdminProfile from '../../components/Admin/AdminProfile';
 
-const AdminDashboardPage =()=> {
+const AdminProfilePage = () => {
   return (
     <div>
       <NawNavBar />
             <div className='d-flex'>
                 <AdminSidebar />
-                <AdminDashboard />
+                <AdminProfile />
             </div>
     </div>
   )
 }
-export default AdminDashboardPage;
+
+export default AdminProfilePage
