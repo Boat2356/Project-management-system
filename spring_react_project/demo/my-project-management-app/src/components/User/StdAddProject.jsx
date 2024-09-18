@@ -14,53 +14,53 @@ const StdAddProject = () => {
 
                 <Form>
                     <Form.Group className="mb-3">
-                        <Form.Label>ชื่อโปรเจค</Form.Label>
-                        <Form.Control type="text" />
+                        <Form.Label className='prompt-semibold'>ชื่อโปรเจค</Form.Label>
+                        <Form.Control className='prompt-regular' type="text" />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>คำอธิบาย</Form.Label>
-                        <Form.Control as="textarea" rows={3} />
+                        <Form.Label className='prompt-semibold'>คำอธิบาย</Form.Label>
+                        <Form.Control className='prompt-regular' as="textarea" rows={3} />
                     </Form.Group>
 
                     <div className='row'>
                         <Form.Group controlId="formFile" className="mb-3 col-6">
-                            <Form.Label>อัปโหลดเอกสารเค้าโครง</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Label className='prompt-semibold'>อัปโหลดเอกสารเค้าโครง</Form.Label>
+                            <Form.Control className='prompt-regular' type="file" />
                         </Form.Group>
 
                         <Form.Group controlId="formFile" className="mb-3 col-6">
-                            <Form.Label>อัปโหลดเอกสารเต็ม</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Label className='prompt-semibold'>อัปโหลดเอกสารเต็ม</Form.Label>
+                            <Form.Control className='prompt-regular' type="file" />
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>ปีการศึกษา</Form.Label>
-                            <Form.Select >
+                            <Form.Label className='prompt-semibold'>ปีการศึกษา</Form.Label>
+                            <Form.Select className='prompt-regular'>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                             </Form.Select>
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>ภาคการศึกษา</Form.Label>
-                            <Form.Select >
+                            <Form.Label className='prompt-semibold'>ภาคการศึกษา</Form.Label>
+                            <Form.Select className='prompt-regular'>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                             </Form.Select>
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>รหัสวิชา</Form.Label>
-                            <Form.Select >
+                            <Form.Label className='prompt-semibold'>รหัสวิชา</Form.Label>
+                            <Form.Select className='prompt-regular'>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                             </Form.Select>
                         </Form.Group>
 
                         <Form.Group className="mb-3 col-6" >
-                            <Form.Label>รายวิชา</Form.Label>
-                            <Form.Select >
+                            <Form.Label className='prompt-semibold'>รายวิชา</Form.Label>
+                            <Form.Select className='prompt-regular'>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                             </Form.Select>
@@ -68,14 +68,14 @@ const StdAddProject = () => {
                     </div>
 
                     <Form.Group className="mb-3" >
-                        <Form.Label>อาจารย์ที่ปรึกษา</Form.Label>
-                        <Form.Select >
+                        <Form.Label className='prompt-semibold'>อาจารย์ที่ปรึกษา</Form.Label>
+                        <Form.Select className='prompt-regular'>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                         </Form.Select>
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Button className='prompt-regular' variant="primary" type="submit">
                         บันทึก
                     </Button>
                 </Form>
