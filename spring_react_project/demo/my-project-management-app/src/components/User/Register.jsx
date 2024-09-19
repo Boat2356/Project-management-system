@@ -1,20 +1,48 @@
 import React, { useState } from 'react'
 import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Register = () => {
 
-    const [show, setShow] = useState(false);
+    //const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    const apiURL = "http://localhost:8080/api/users/register";
 
+    const [formData, setFormData] = useState({
+        studenId : "",
+        firstName : "",
+        lastName : "",
+        email : "",
+        password : ""
+    });
+
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        await delay(500);
+        setErrorMessage('');
 
-        setLoading(false);
+        try {
+            // Sending a POST request to the registration endpoint
+            await axios.post(apiURL, formData);
+            setLoading(false);
+            navigate('/login-page'); // Navigate to the login page after successful registration
+        } catch (error) {
+            setLoading(false);
+            setErrorMessage('การลงทะเบียนล้มเหลว โปรดลองใหม่');
+        }
+        //await delay(500);
+        //setLoading(false);
     };
-
 
     return (
         <div
@@ -23,12 +51,17 @@ const Register = () => {
 
             <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
 
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+
                 <div className="h4 mb-4 prompt-semibold text-primary">สร้างบัญชี</div>
                 <Form.Group className="prompt-semibold  mb-2" controlId="username">
                     <Form.Label>รหัสนักศึกษา</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="xxxxxxxxx-x"
+                        name="studentId"
+                        value={formData.studentId}
+                        onChange={handleChange}
                         required
                     />
                 </Form.Group>
@@ -39,6 +72,9 @@ const Register = () => {
                         <Form.Control
                         type="text"
                         placeholder="ชื่อ"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
                         required
                     />
                     </Form.Group>
@@ -48,6 +84,9 @@ const Register = () => {
                         <Form.Control
                         type="text"
                         placeholder="นามสกุล"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
                         required
                     />
                     </Form.Group>
@@ -58,6 +97,9 @@ const Register = () => {
                     <Form.Control
                         type="email"
                         placeholder="name@email.com"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         required
                     />
                 </Form.Group>
@@ -67,6 +109,9 @@ const Register = () => {
                     <Form.Control
                         type="password"
                         placeholder="รหัสผ่าน"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
                         required
                     />
                 </Form.Group>
@@ -92,4 +137,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Register;
