@@ -1,24 +1,41 @@
 import React, { useState } from 'react'
 import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LogIn = () => {
     
     const [inputUsername, setInputUsername] = useState("");
     const [inputPassword, setInputPassword] = useState("");
-
-    const [show, setShow] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
+    const apiURL = "http://localhost:8080/api/users/login";
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        await delay(500);
+        setErrorMessage("");
 
-        setLoading(false);
+        try {
+            const response = await axios.post(apiURL, {
+                email: inputUsername,
+                password: inputPassword
+            });
+
+            // Assuming the backend responds with a token or user details
+            const data = response.data;
+
+            // Save authentication details (e.g., token) to localStorage or state management
+            localStorage.setItem("authToken", data.token); // Example: save token
+
+            setLoading(false);
+            navigate('/home-page'); // Navigate to home page on successful login
+        } catch (error) {
+            setLoading(false);
+            setErrorMessage('อีเมลหรือรหัสผ่านไม่ถูกต้อง โปรดลองใหม่');
+        }
     };
-
-    const handlePassword = () => { };
 
   return (
     <div
@@ -28,6 +45,12 @@ const LogIn = () => {
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         
         <div className="h4 mb-4 prompt-semibold text-primary">เข้าสู่ระบบ</div>
+         {/* Display error message */}
+         {errorMessage && (
+            <Alert className="mb-2" variant="danger" onClose={() => setErrorMessage('')} dismissible>
+              {errorMessage}
+            </Alert>
+          )}
         {/* ALert */}
         {/* {show ? (
           <Alert

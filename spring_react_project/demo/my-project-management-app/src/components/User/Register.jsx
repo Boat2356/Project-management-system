@@ -30,7 +30,7 @@ const Register = () => {
         event.preventDefault();
         setLoading(true);
         setErrorMessage('');
-
+       
         try {
             // Sending a POST request to the registration endpoint
             await axios.post(apiURL, formData);
@@ -40,8 +40,6 @@ const Register = () => {
             setLoading(false);
             setErrorMessage('การลงทะเบียนล้มเหลว โปรดลองใหม่');
         }
-        //await delay(500);
-        //setLoading(false);
     };
 
     return (
