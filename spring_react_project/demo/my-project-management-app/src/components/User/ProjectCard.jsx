@@ -14,7 +14,7 @@ const ProjectCard = () => {
     const navigate = useNavigate();
 
     const handleSearchClick = () =>{
-      navigate("/search")
+      navigate("/search");
     }
 
     const handleDetailClick = (id) => {

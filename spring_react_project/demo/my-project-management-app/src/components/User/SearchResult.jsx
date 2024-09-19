@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 
 const SearchResult = () => {
   const [results, setResults] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Extract query params from the URL
@@ -16,12 +17,12 @@ const SearchResult = () => {
     const academicYear = queryParams.get('academicYear') || '';
 
     // Perform your search logic here, e.g., fetching data from an API
-    const mockResults = [
-      { projectName: 'Project 1', courseName: 'Course A', courseCode: 'C001', academicYear: '2023' },
-      { projectName: 'Project 2', courseName: 'Course B', courseCode: 'C002', academicYear: '2024' },
+    const projects = [
+      {id: 1, projectName: 'Project 1', courseName: 'Course A', courseCode: 'C001', academicYear: '2023' },
+      {id: 2, projectName: 'Project 2', courseName: 'Course B', courseCode: 'C002', academicYear: '2024' },
     ];
 
-    const filteredResults = mockResults.filter((item) => {
+    const filteredResults = projects.filter((item) => {
       return (
         (projectName === '' || item.projectName.includes(projectName)) &&
         (courseName === '' || item.courseName.includes(courseName)) &&
@@ -33,8 +34,13 @@ const SearchResult = () => {
     setResults(filteredResults);
   }, [location.search]);
 
+
+  const handleDetailClick = (id) => {
+    navigate(`/projects/${id}`);  // นำทางไปยัง URL ที่มี id ของโปรเจค
+};
+
   return (
-    <div>
+    <div className='container mt-4'>
       <h3 className="prompt-semibold fs-2">ผลการค้นหา</h3>
       <div className="row">
           {results.map((result)  => (
@@ -45,7 +51,7 @@ const SearchResult = () => {
                   <Card.Title className='prompt-regular fs-6'>{result.courseCode}</Card.Title>
                   <Card.Title className='prompt-regular fs-6'>{result.courseName}</Card.Title>
                   <Card.Title className='prompt-regular fs-6'>{result.academicYear}</Card.Title>
-                  <Button className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
+                  <Button onClick={() => handleDetailClick(result.id)} className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
                 </Card.Body>
               </Card>
             </div>

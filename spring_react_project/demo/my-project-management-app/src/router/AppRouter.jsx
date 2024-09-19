@@ -18,6 +18,8 @@ import SearchProjectPage from '../pages/User/SearchProjectPage';
 import SearchResultPage from '../pages/User/SearchResultPage';
 import AdminProjectDetailPage from '../pages/Admin/AdminProjectDetailPage';
 import ProjectDetailPage from '../pages/User/ProjectDetailPage';
+import LogInPage from '../pages/User/LogInPage';
+import RegisterPage from '../pages/User/RegisterPage';
 function AppRouter(){
   return (
     <Router>           
@@ -27,14 +29,16 @@ function AppRouter(){
             <Route path="/admin/course-crud" element = {<CourseCrud />} />
             <Route path="/admin/supervisor-crud" element = {<SupervisorCrud />} />
             <Route path="/home-page" element = {<HomePage />} /> 
+            <Route path="/search" element= {<SearchProjectPage/>}/>
+            <Route path="/results" element = {<SearchResultPage/>} />
+            <Route path="/projects/:id" element = {<ProjectDetailPage/>} />
+            <Route path="/login-page" element = {<LogInPage />} /> 
+            <Route path="/register-page" element = {<RegisterPage />} /> 
             <Route path="/user/std-profile" element = {<StdProfilePage />} />  
             <Route path="/user/std-edit-profile" element = {<StdEditProfilePage />} />
             <Route path="/user/std-add-project" element = {<StdAddProjectPage />} />  
             <Route path="/user/std-manage-project" element = {<StdManageProjectPage />} /> 
-            <Route path="/admin/profile" element = {<AdminProfilePage />} />  
-            <Route path="/search" element= {<SearchProjectPage/>}/>
-            <Route path="/results" element = {<SearchResultPage/>} />
-            <Route path="//projects/:id" element = {<ProjectDetailPage/>} />
+            <Route path="/admin/profile" element = {<AdminProfilePage />} />
             <Route path="/admin/edit-profile" element = {<AdminEditProfilePage />} />  
             <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />  
             <Route path="/admin/manage-subject" element = {<AdminManageSubjectPage />} />  
