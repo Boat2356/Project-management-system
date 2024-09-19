@@ -31,7 +31,7 @@ const SearchProjectForm = () => {
 
     return(
         <Card className="container d-flex flex-column gap-4">
-            <h3 className="prompt-semibold fs-3 text-center">ค้นหาโปรเจค</h3>
+            <h3 className="prompt-semibold fs-3 text-center">ค้นหาโปรเจค     </h3>
             <form onSubmit={handleSearch} className="d-flex flex-column gap-4" align="center">
                 <div>
                     <label className='prompt-regular'>ชื่อโปรเจค</label>
