@@ -8,7 +8,7 @@ const AdminManageSubject = () => {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [notification, setNotification] = useState(null);
-  const [formData, setFormData] = useState({ id: null, course_code: '', name: '', description: '', credits: '' });
+  const [formData, setFormData] = useState({ id: null, courseCode: '', name: '', description: '', credits: '' });
   const [isEdit, setIsEdit] = useState(false);
   const [actionType, setActionType] = useState(''); // 'add', 'update', 'delete'
   const [courseToDelete, setCourseToDelete] = useState(null);
@@ -73,7 +73,7 @@ const AdminManageSubject = () => {
     }
   };
 
-  const handleShowModal = (course = { id: null, course_code: '', name: '', description: '', credits: '' }, type = 'add') => {
+  const handleShowModal = (course = { id: null, courseCode: '', name: '', description: '', credits: '' }, type = 'add') => {
     setFormData(course);
     setIsEdit(type === 'edit');
     setActionType(type);
@@ -82,7 +82,7 @@ const AdminManageSubject = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ id: null, course_code: '', name: '', description: '', credits: '' });
+    setFormData({ id: null, courseCode: '', name: '', description: '', credits: '' });
   };
 
   const handleShowConfirmModal = (course, type) => {
@@ -145,7 +145,7 @@ const AdminManageSubject = () => {
           {courses.map((course) => (
             <tr key={course.id}>
               <td className='prompt-regular' hidden>{course.id}</td>
-              <td className='prompt-regular'>{course.course_code}</td>
+              <td className='prompt-regular'>{course.courseCode}</td>
               <td className='prompt-regular'>{course.name}</td>
               <td className='prompt-regular'>{course.credits}</td>
               <td>
@@ -186,8 +186,8 @@ const AdminManageSubject = () => {
               <Form.Control
                 className='prompt-regular'
                 type='text'
-                name="course_code"
-                value={formData.course_code}
+                name="courseCode"
+                value={formData.courseCode}
                 onChange={handleChange}
                 placeholder="รหัสวิชา"
                 disabled={isLoading}
