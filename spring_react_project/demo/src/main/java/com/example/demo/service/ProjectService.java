@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
@@ -221,7 +222,7 @@ public class ProjectService {
     }
 
     public byte[] getProposalFile(int projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow();              
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("Project not found"));
         return project.getProposalFile();
     }
 
@@ -331,24 +332,44 @@ public class ProjectService {
 
             List<FileMetadata> fileMetadataList = new ArrayList<>();
 
-            if (project.getProposalFile() != null) {
+            if (project.getProposalFile() != null) {           
+                String fileProposalDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/projects/")
+                    .path(String.valueOf(projectId))
+                    .path("/files/proposal")
+                    .toUriString();     
                 fileMetadataList.add(new FileMetadata(
                         project.getProposalfilename(),
-                        "/api/projects/" + projectId + "/files/proposal"
+                        fileProposalDownloadUri,
+                        "proposal"
                 ));
             }
 
             if (project.getFulldocumentFile() != null) {
+                String fileFullDocumentDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/projects/")
+                    .path(String.valueOf(projectId))
+                    .path("/files/fulldocument")
+                    .toUriString();
                 fileMetadataList.add(new FileMetadata(
                         project.getFulldocumentfilename(),
-                        "/api/projects/" + projectId + "/files/fulldocument"
+                        fileFullDocumentDownloadUri,
+                        "fulldocument"
+                        //"/api/projects/" + projectId + "/files/fulldocument"
                 ));
             }
 
             if (project.getImage() != null) {
+                String fileImageDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/projects/")
+                    .path(String.valueOf(projectId))
+                    .path("/files/image")
+                    .toUriString();
                 fileMetadataList.add(new FileMetadata(
                         project.getImagefilename(),
-                        "/api/projects/" + projectId + "/files/image"
+                        fileImageDownloadUri,
+                        "image"
+                        //"/api/projects/" + projectId + "/files/image"
                 ));
             }
 
@@ -360,6 +381,13 @@ public class ProjectService {
         } else {
             throw new RuntimeException("Project not found with id: " + projectId);
         }
+    }
+
+    // Change unapproved projects to approved or vice versa
+    public Project toggleApproval(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        project.setisapproved(!project.isapproved());
+        return projectRepository.save(project);
     }
 
 

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,17 +47,17 @@ public class Project {
     @Column(columnDefinition="LONGBLOB")
     private byte[] image;  
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<ProjectStudent> projectStudents = new HashSet<ProjectStudent>();
 
-    @JsonIgnore
-    @ManyToOne
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
     private Supervisor supervisor;
 
-    @JsonIgnore
-    @ManyToOne
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
