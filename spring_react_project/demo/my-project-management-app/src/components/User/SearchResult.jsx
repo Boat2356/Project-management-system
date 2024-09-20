@@ -19,7 +19,7 @@ const SearchResult = () => {
     // Perform your search logic here, e.g., fetching data from an API
     const projects = [
       {id: 1, projectName: 'Project 1', courseName: 'Course A', courseCode: 'C001', academicYear: '2023' },
-      {id: 2, projectName: 'Project 2', courseName: 'Course B', courseCode: 'C002', academicYear: '2024' },
+      {id: 2, projectName: 'Project 2', courseName: 'Course B', courseCode: 'C002', academicYear: '2024' }
     ];
 
     const filteredResults = projects.filter((item) => {
@@ -48,9 +48,9 @@ const SearchResult = () => {
               <Card className="mb-4 mt-4">
                 <Card.Body>
                   <Card.Title className='prompt-semibold'>{result.projectName}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>{result.courseCode}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>{result.courseName}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>{result.academicYear}</Card.Title>
+                  <Card.Title className='prompt-regular fs-6'>รหัสวิชา: {result.courseCode}</Card.Title>
+                  <Card.Title className='prompt-regular fs-6'>ชื่อวิชา: {result.courseName}</Card.Title>
+                  <Card.Title className='prompt-regular fs-6'>ปีการศึกษา: {result.academicYear}</Card.Title>
                   <Button onClick={() => handleDetailClick(result.id)} className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
                 </Card.Body>
               </Card>
