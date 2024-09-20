@@ -195,7 +195,7 @@ const AdminManageSubject = () => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <Form.Label className='prompt-semibold'>รายวิชา</Form.Label>
+              <Form.Label className='prompt-semibold'>ชื่อวิชา</Form.Label>
               <Form.Control
                 className='prompt-regular'
                 type="text"
@@ -208,7 +208,7 @@ const AdminManageSubject = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label className='prompt-semibold'>Credits</Form.Label>
+              <Form.Label className='prompt-semibold'>หน่วยกิต</Form.Label>
               <Form.Control
                 className='prompt-regular'
                 type="number"
