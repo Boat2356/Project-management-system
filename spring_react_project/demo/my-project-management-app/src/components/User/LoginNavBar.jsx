@@ -3,9 +3,19 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 //Navbar หลังจาก login แล้ว
 const LoginNavBar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    //เอาโทเคนออก
+    localStorage.removeItem("token");
+
+    // Redirect to home page
+    navigate("/login-page");
+  };
   return (
     <div className="">
       <Navbar expand="lg" className="p-3 bg-white text-dark shadow-sm ">
@@ -38,12 +48,9 @@ const LoginNavBar = () => {
               <Nav>
                 <Button
                   variant="outline-danger"
-                  onClick={() => {
-                    // Add logout functionality here
-                    console.log("Logging out...");
-                  }}
+                  onClick={handleLogout}
                 >
-                  Logout
+                  ออกจากระบบ
                 </Button>
               </Nav>
             </Navbar.Collapse>
