@@ -4,11 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -82,9 +80,12 @@ public class User implements UserDetails {
         this.username = username;
     }
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {        
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }    
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(role.name())); // Convert role to authority
+        return authorities;
+    }   
     @Override
     public boolean isEnabled() {        
         return true;

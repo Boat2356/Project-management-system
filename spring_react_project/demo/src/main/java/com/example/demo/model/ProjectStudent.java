@@ -29,7 +29,7 @@ public class ProjectStudent {
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

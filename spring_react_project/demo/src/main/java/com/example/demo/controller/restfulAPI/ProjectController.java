@@ -91,15 +91,22 @@ public class ProjectController {
         }
     }*/
     @PostMapping(value = "/projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Project createProject(@RequestPart ("project") Project project,
+    public ResponseEntity<Project> createProject(@RequestPart ("project") Project project,
                                  @RequestParam ("courseId") int courseId,
                                  @RequestParam ("supervisorId") int supervisorId,
                                  @RequestParam ("userIds") List<Integer> userIds,
                                  @RequestParam (value = "proposalFile", required = false) MultipartFile proposalFile,
                                  @RequestParam (value = "fullDocumentFile", required = false) MultipartFile fullDocumentFile,
-                                 @RequestParam (value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-        return projectService.createProjectWithFiles(project, courseId, supervisorId, userIds, 
-                                                     proposalFile, fullDocumentFile, imageFile);
+                                 @RequestParam (value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            Project savedProject = projectService.createProjectWithFiles(project, courseId, supervisorId, userIds,
+                                                                     proposalFile, fullDocumentFile, imageFile);
+            return ResponseEntity.ok(savedProject);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PutMapping(value = "/projects/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -213,6 +220,21 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    // Change not aprrved project to approved or vice versa
+    @PutMapping("/projects/{projectId}/status")
+    public ResponseEntity<Project> approveProject(@PathVariable int projectId) {
+        try {
+            Project project = projectService.toggleApproval(projectId);
+            return ResponseEntity.ok(project);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+
+
 
 
 
