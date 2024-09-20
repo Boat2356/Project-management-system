@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 // Nav Bar ตามที่ออกแบบ
-const NawNavBar = () => {
+const NewNavBar = () => {
     return (
         <div className=''>
             <Navbar expand="lg" className="p-3 bg-white text-dark shadow-sm ">
@@ -19,7 +19,7 @@ const NawNavBar = () => {
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className=''>
                                 <Nav.Link href="/home-page" className='prompt-semibold pt-3 fw-bold'>หน้าหลัก</Nav.Link>
-                                <Nav.Link href="#" className='prompt-semibold pt-3 fw-bold'>เข้าสู่ระบบ</Nav.Link>
+                                <Nav.Link href="/login-page" className='prompt-semibold pt-3 fw-bold'>เข้าสู่ระบบ</Nav.Link>
 
                             </Nav>
                         </Navbar.Collapse>
@@ -30,4 +30,4 @@ const NawNavBar = () => {
         </div>
     )
 }
-export default NawNavBar;
+export default NewNavBar;

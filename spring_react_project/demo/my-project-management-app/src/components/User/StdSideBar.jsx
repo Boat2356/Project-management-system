@@ -1,6 +1,4 @@
 import React from 'react'
-import { BsPersonFill,BsFillPencilFill,BsPlusCircleFill,BsBoxArrowRight  } from "react-icons/bs";
-import { FaBook } from "react-icons/fa";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
@@ -15,31 +13,31 @@ const StdSideBar = () => {
                 <NavLink 
                     to="/user/std-profile" 
                     className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-profile') ? 'active' : ''}`}>
-                    <BsPersonFill className="fs-3 me-2" />
+                    <i className="bi bi-person-fill fs-5 me-2 mb-2" ></i>
                     <span className="prompt-semibold text-black fs-6">บัญชีผู้ใช้</span>
                 </NavLink>
                 <NavLink 
                     to="/user/std-edit-profile" 
                     className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-edit-profile') ? 'active' : ''}`}>
-                    <BsFillPencilFill className="fs-3 me-2" />
+                    <i className="bi bi-pencil-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold fs-6">แก้ไขบัญชี</span>
                 </NavLink>
                 <NavLink 
                     to="/user/std-add-project" 
                     className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-add-project') ? 'active' : ''}`}>
-                    <BsPlusCircleFill className="fs-3 me-2" />
+                    <i className="bi bi-plus-circle-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">เพิ่มโปรเจค</span>
                 </NavLink>
                 <NavLink 
                     to="/user/std-manage-project" 
                     className={`text-black s-link nav-link d-flex align-items-center mb-4 ${isActive('/user/std-manage-project') ? 'active' : ''}`}>
-                    <FaBook className="fs-3 me-2" />
+                    <i className="bi bi-book-half fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">จัดการโปรเจค</span>
                 </NavLink>
                 <NavLink 
                     to="/" 
                     className={`text-danger s-link nav-link d-flex align-items-center mb-3 ${isActive('/') ? 'active' : ''}`}>
-                    <BsBoxArrowRight  className="fs-3 me-2" />
+                    <i className="bi bi-box-arrow-right fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold fs-6">ออกจากระบบ</span>
                 </NavLink>
             </Nav>
