@@ -12,7 +12,7 @@ const Register = () => {
     const apiURL = "http://localhost:8080/api/users/register";
 
     const [formData, setFormData] = useState({
-        studenId : "",
+        student_id : "",
         firstName : "",
         lastName : "",
         email : "",
@@ -57,8 +57,8 @@ const Register = () => {
                     <Form.Control
                         type="text"
                         placeholder="xxxxxxxxx-x"
-                        name="studentId"
-                        value={formData.studentId}
+                        name="student_id"
+                        value={formData.student_id}
                         onChange={handleChange}
                         required
                     />
