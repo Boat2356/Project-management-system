@@ -25,7 +25,8 @@ public class AuthenticationService {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setUsername(request.getUsername());
+        //user.setUsername(request.getUsername());
+        user.setStudent_id(request.getStudent_id());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());        
@@ -39,7 +40,7 @@ public class AuthenticationService {
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()));
 
-        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+        User user = repository.findByEmail(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
@@ -57,7 +58,8 @@ public class AuthenticationService {
         User existingUser = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         existingUser.setFirstName(updatedUser.getFirstName());
         existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setUsername(updatedUser.getUsername());
+        //existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setStudent_id(updatedUser.getStudent_id());
         existingUser.setEmail(updatedUser.getEmail());
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));

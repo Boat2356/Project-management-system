@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private int id;
     private String firstName;
     private String lastName;
-    private String username;
+    private String student_id;    
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)
@@ -35,8 +35,14 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<ProjectStudent> projectStudents = new HashSet<ProjectStudent>();
-    
+    private Set<ProjectStudent> projectStudents = new HashSet<ProjectStudent>();  
+
+    public String getStudent_id() {
+        return student_id;
+    }
+    public void setStudent_id(String student_id) {
+        this.student_id = student_id;
+    }
     public int getId() {
         return id;
     }
@@ -73,11 +79,12 @@ public class User implements UserDetails {
     public void setRole(Role role) {
         this.role = role;
     }
+    @Override
     public String getUsername() {
-        return username;
+        return email;
     }
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String email) {
+        this.email = email;
     }
     @Override
     @JsonIgnore
