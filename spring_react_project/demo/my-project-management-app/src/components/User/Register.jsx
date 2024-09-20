@@ -52,7 +52,7 @@ const Register = () => {
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                 <div className="h4 mb-4 prompt-semibold text-primary">สร้างบัญชี</div>
-                <Form.Group className="prompt-semibold  mb-2" controlId="username">
+                <Form.Group className="prompt-semibold  mb-2">
                     <Form.Label>รหัสนักศึกษา</Form.Label>
                     <Form.Control
                         type="text"
