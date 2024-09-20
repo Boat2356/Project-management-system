@@ -20,6 +20,7 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String courseId;
     private String name;
     private String description;
     private int credits;
@@ -32,6 +33,12 @@ public class Course {
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public String getCourseId() {
+        return courseId;
+    }
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
     public String getName() {
         return name;
@@ -57,7 +64,5 @@ public class Course {
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
     }
-    
-
     
 }
