@@ -25,7 +25,7 @@ const ProjectCrud = () => {
     year: '',
     semester: '',
     status: 0,
-    courseId: '',
+    course_code: '',
     supervisorId: '',
     userIds: [],
   });
@@ -102,7 +102,7 @@ const ProjectCrud = () => {
       year: '',
       semester: '',
       status: 0,
-      courseId: '',
+      course_code: '',
       supervisorId: '',
       userIds: [],
     });
@@ -173,7 +173,7 @@ const ProjectCrud = () => {
         year: project.year,
         semester: project.semester,
         status: project.status,
-        courseId: project.course.id,
+        course_code: project.course.id,
         supervisorId: project.supervisor.id,
         userIds: project.projectStudents.map(ps => ps.user.id),
       });
@@ -361,8 +361,8 @@ const ProjectCrud = () => {
             <Form.Group className="mb-3">
               <Form.Label>Course</Form.Label>
               <Form.Select
-                name="courseId"
-                value={formData.courseId}
+                name="course_code"
+                value={formData.course_code}
                 onChange={handleInputChange}
                 disabled={modalMode === 'view'}
               >

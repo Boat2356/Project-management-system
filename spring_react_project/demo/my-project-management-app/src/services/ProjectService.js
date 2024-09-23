@@ -15,7 +15,7 @@ export const getProjectById = async (id) => {
 export const createProject = (projectData, files) => {
     const formData = new FormData();
     formData.append('project', new Blob([JSON.stringify(projectData)], { type: 'application/json' }));
-    formData.append('courseId', projectData.courseId);
+    formData.append('course_code', projectData.course_code);
     formData.append('supervisorId', projectData.supervisorId);
     projectData.userIds.forEach(userId => formData.append('userIds', userId));
     if (files.proposalFile) formData.append('proposalFile', files.proposalFile);
@@ -31,7 +31,7 @@ export const createProject = (projectData, files) => {
 export const updateProject = (id, projectData, files) => {
     const formData = new FormData();
     formData.append('project', new Blob([JSON.stringify(projectData)], { type: 'application/json' }));
-    formData.append('courseId', projectData.courseId);
+    formData.append('course_code', projectData.course_code);
     formData.append('supervisorId', projectData.supervisorId);
     projectData.userIds.forEach(userId => formData.append('userIds', userId));
     if (files.proposalFile) formData.append('proposalFile', files.proposalFile);

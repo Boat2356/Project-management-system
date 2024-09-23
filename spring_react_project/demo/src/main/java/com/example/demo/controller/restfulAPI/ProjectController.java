@@ -54,9 +54,9 @@ public class ProjectController {
         .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/course/{courseId}/projects/{projectId}")
-    public ResponseEntity<Project> getProjectsByCourseId(@PathVariable int courseId, @PathVariable int projectId) {
-        return ResponseEntity.ok().body(courseService.getCourseById(courseId).getProjects()
+    @GetMapping("/course/{course_code}/projects/{projectId}")
+    public ResponseEntity<Project> getProjectsByCourseCode(@PathVariable int course_code, @PathVariable int projectId) {
+        return ResponseEntity.ok().body(courseService.getCourseById(course_code).getProjects()
                 .stream().filter(project -> project.getId() == projectId).findFirst().orElse(null));
     }
 
@@ -67,47 +67,17 @@ public class ProjectController {
                 .stream().filter(project -> project.getId() == projectId).findFirst().orElse(null));
     }
 
-    /*
-     * @PostMapping(value = "/course/{courseId}/supervisor/{supervisorId}/projects")
-     * public ResponseEntity <Project> addProject(@RequestBody Project
-     * project,@PathVariable int courseId, @PathVariable int supervisorId) throws
-     * IOException {
-     * try {
-     * Project savedProject = projectService.addProject(project, courseId,
-     * supervisorId);
-     * return ResponseEntity.ok(savedProject);
-     * } catch (Exception e) {
-     * return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-     * }
-     * 
-     * }
-     * 
-     * @PutMapping("/projects/{ProjectId}")
-     * public ResponseEntity<Project> updateProject(@RequestBody Project
-     * project,@PathVariable int ProjectId) {
-     * try {
-     * Project updatedProject = projectService.updateProject(project, ProjectId);
-     * if (updatedProject != null) {
-     * return new ResponseEntity<>(updatedProject, HttpStatus.OK);
-     * } else {
-     * return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-     * }
-     * } catch (IOException e) {
-     * return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-     * }
-     * }
-     */
     @PostMapping(value = "/projects", consumes = {
             MediaType.MULTIPART_FORM_DATA_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> createProject(@RequestPart("project") Project project,
-            @RequestParam("courseId") int courseId,
+            @RequestParam("course_code") int course_code,
             @RequestParam("supervisorId") int supervisorId,
             @RequestParam("userIds") List<Integer> userIds,
             @RequestParam(value = "proposalFile", required = false) MultipartFile proposalFile,
             @RequestParam(value = "fullDocumentFile", required = false) MultipartFile fullDocumentFile,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
         try {
-            Project savedProject = projectService.createProjectWithFiles(project, courseId, supervisorId, userIds,
+            Project savedProject = projectService.createProjectWithFiles(project, course_code, supervisorId, userIds,
                     proposalFile, fullDocumentFile, imageFile);
             return ResponseEntity.ok(savedProject);
         } catch (RuntimeException e) {
@@ -120,7 +90,7 @@ public class ProjectController {
     @PutMapping(value = "/projects/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> updateProject(@PathVariable int projectId,
             @RequestPart("project") Project project,
-            @RequestParam("courseId") int courseId,
+            @RequestParam("course_code") int course_code,
             @RequestParam("supervisorId") int supervisorId,
             @RequestParam("userIds") List<Integer> userIds,
             @RequestParam(value = "proposalFile", required = false) MultipartFile proposalFile,
@@ -128,7 +98,7 @@ public class ProjectController {
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
 
         try {
-            Project updatedProject = projectService.updateProjectWithFiles(project, projectId, courseId, supervisorId,
+            Project updatedProject = projectService.updateProjectWithFiles(project, projectId, course_code, supervisorId,
                     userIds,
                     proposalFile, fullDocumentFile, imageFile);
             return ResponseEntity.ok(updatedProject);
