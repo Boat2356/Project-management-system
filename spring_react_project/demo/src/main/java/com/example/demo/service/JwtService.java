@@ -1,16 +1,19 @@
 package com.example.demo.service;
-import com.example.demo.model.User;
-import com.example.demo.repository.TokenRepository;
+import java.util.Date;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+
+import com.example.demo.model.User;
+import com.example.demo.repository.TokenRepository;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.util.function.Function;
-import javax.crypto.SecretKey;
 
 @Service
 public class JwtService {
@@ -25,6 +28,7 @@ public class JwtService {
     public String generateToken(User user) {
         String token = Jwts.builder()
         .subject(user.getUsername())
+        .claim("role", user.getRole()) // Add role to claims if needed
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000))               
         .signWith(getSigninKey())

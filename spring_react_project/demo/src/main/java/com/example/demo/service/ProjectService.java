@@ -1,10 +1,14 @@
 package com.example.demo.service;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,27 +17,21 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
 import com.example.demo.model.Project;
+import com.example.demo.model.ProjectStudent;
 import com.example.demo.model.Supervisor;
 import com.example.demo.model.User;
 import com.example.demo.repository.CourseRepository;
-import com.example.demo.repository.SupervisorRepository;
-import com.example.demo.repository.UserRepository;
-import java.time.LocalDateTime;
-import jakarta.persistence.EntityNotFoundException;
-import com.example.demo.model.Project;
-import com.example.demo.model.ProjectStudent;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.repository.ProjectStudentRepository;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.example.demo.repository.SupervisorRepository;
+import com.example.demo.repository.UserRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProjectService {
     @Autowired
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
@@ -57,42 +55,12 @@ public class ProjectService {
     public Project save(Project project) {
         return projectRepository.save(project);
     }
-    /* ใช้งานได้แต่ติดไว้ก่อน
-    public Project addProject(Project project,int courseId, int supervisorId) throws IOException {      
-        Optional<Course> course = courseRepository.findById(courseId); 
-        Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-        if(course.isPresent() && supervisor.isPresent()){
-            project.setCourse(course.get());
-            project.setSupervisor(supervisor.get());
-        }else{
-            throw new RuntimeException("Course or Supervisor not found");
-        }    
-        return projectRepository.save(project);       
-                
-    } 
-    public Project updateProject(Project project, int id) throws IOException {
-        Project existingProject = projectRepository.findById(id).orElse(null);
-        existingProject.setName(project.getName());
-        existingProject.setDescription(project.getDescription());
-        existingProject.setisapproved(project.isapproved());
-        existingProject.setYear(project.getYear());
-        existingProject.setSemester(project.getSemester());
-        Course course = project.getCourse();
-        Supervisor supervisor = project.getSupervisor();
-        if(course != null){
-            existingProject.setCourse(course);
-        }
-        if(supervisor != null){
-            existingProject.setSupervisor(supervisor);
-        }              
-        return projectRepository.save(existingProject);
-        
-    }*/
-    public Project createProjectWithFiles(Project project, int courseId, int supervisorId, 
+
+    public Project createProjectWithFiles(Project project, int course_code, int supervisorId, 
                                           List<Integer> userIds, MultipartFile proposalFile, 
                                           MultipartFile fullDocumentFile, MultipartFile imageFile) 
                                           throws IOException {
-        Course course = courseRepository.findById(courseId).orElseThrow(null);
+        Course course = courseRepository.findById(course_code).orElseThrow(null);
         Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);          
         project.setCourse(course);
         project.setSupervisor(supervisor);      
@@ -125,7 +93,7 @@ public class ProjectService {
         return savedProject;
     }
 
-    public Project updateProjectWithFiles(Project project, int id, int courseId, int supervisorId, 
+    public Project updateProjectWithFiles(Project project, int id, int course_code, int supervisorId, 
                                           List<Integer> userIds, MultipartFile proposalFile, 
                                           MultipartFile fullDocumentFile, MultipartFile imageFile) 
                                           throws IOException {
@@ -135,7 +103,7 @@ public class ProjectService {
         existingProject.setStatus(project.getStatus());
         existingProject.setYear(project.getYear());
         existingProject.setSemester(project.getSemester());
-        Course course = courseRepository.findById(courseId).orElseThrow(null);
+        Course course = courseRepository.findById(course_code).orElseThrow(null);
         Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);
         existingProject.setCourse(course);
         existingProject.setSupervisor(supervisor);
@@ -207,10 +175,10 @@ public class ProjectService {
     public void deleteProjectById(int id) {
         projectRepository.deleteById(id);        
     }
-    public Project deleteProject(int projectId,int supervisorId,int courseId) {
+    public Project deleteProject(int projectId,int supervisorId,int course_code) {
         Optional<Project> project = projectRepository.findById(projectId);
         Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-        Optional<Course> course = courseRepository.findById(courseId);
+        Optional<Course> course = courseRepository.findById(course_code);
         if(project.isPresent() && supervisor.isPresent() && course.isPresent()){
             projectRepository.deleteById(projectId);
             return project.get();

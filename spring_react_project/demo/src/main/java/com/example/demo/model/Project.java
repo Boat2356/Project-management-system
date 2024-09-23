@@ -2,10 +2,6 @@ package com.example.demo.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import java.util.Map;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +14,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 
 @Entity
@@ -58,7 +53,7 @@ public class Project {
 
     //@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    @JoinColumn(name = "course_code", referencedColumnName = "id")
     private Course course;    
     /* 
     @Transient

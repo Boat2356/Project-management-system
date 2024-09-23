@@ -36,7 +36,7 @@ const AdminManageProject = () => {
         year: '',
         semester: '',
         status: 0,
-        courseId: '',
+        course_code: '',
         supervisorId: '',
         userIds: [],
     });
@@ -118,7 +118,7 @@ const AdminManageProject = () => {
             year: '',
             semester: '',
             status: 0,
-            courseId: '',
+            course_code: '',
             supervisorId: '',
             userIds: [],
         });
@@ -202,7 +202,7 @@ const AdminManageProject = () => {
                 year: project.year,
                 semester: project.semester,
                 status: project.status,
-                courseId: project.course.id,
+                course_code: project.course.id,
                 supervisorId: project.supervisor.id,
                 userIds: project.projectStudents.map(ps => ps.user.id),
             });

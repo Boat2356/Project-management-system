@@ -5,11 +5,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.model.AuthenticationResponse;
+import com.example.demo.model.Role;
+import com.example.demo.model.Token;
 import com.example.demo.model.User;
 import com.example.demo.repository.TokenRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.model.Token;
 
 @Service
 public class AuthenticationService {
@@ -30,18 +32,13 @@ public class AuthenticationService {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        //user.setUsername(request.getUsername());
         user.setStudent_id(request.getStudent_id());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());        
+        user.setRole(request.getRole() != null ? request.getRole() : Role.USER);        
         user = repository.save(user);
         String token = jwtService.generateToken(user);
-
-        // save the generated token
-        saveUserToken(user, token);
-
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getRole().name(), user.getId());
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -49,17 +46,16 @@ public class AuthenticationService {
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()));
 
-        User user = repository.findByEmail(request.getUsername()).orElseThrow();
+        User user = repository.findByEmail(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtService.generateToken(user);
+        
 
         // revoke all token by user
         revokeAllTokenByUser(user);
 
         // save the generated token
         saveUserToken(user, token);
-
-
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getRole().name(), user.getId());
     }
 
     public void revokeAllTokenByUser(User user) {
@@ -97,7 +93,7 @@ public class AuthenticationService {
         existingUser.setLastName(updatedUser.getLastName());
         //existingUser.setUsername(updatedUser.getUsername());
         existingUser.setStudent_id(updatedUser.getStudent_id());
-        existingUser.setEmail(updatedUser.getEmail());
+        // existingUser.setEmail(updatedUser.getEmail());
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
@@ -109,5 +105,9 @@ public class AuthenticationService {
     public void deleteUser(int id) {
         User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         repository.delete(user);
+    }
+
+    public void revokeToken(String token) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

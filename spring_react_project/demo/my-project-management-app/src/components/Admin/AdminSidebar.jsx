@@ -42,12 +42,6 @@ const AdminSidebar = () => {
                     <i className="bi bi-people-fill fs-5 me-2 mb-2"></i>
                     <span className="prompt-semibold text-black fs-6">ข้อมูลอาจารย์ที่ปรึกษา</span>
                 </NavLink>
-                <NavLink 
-                    to="/" 
-                    className={`text-danger s-link nav-link d-flex align-items-center mb-3 ${isActive('/') ? 'active' : ''}`}>
-                    <i className="bi bi-box-arrow-right fs-5 me-2 mb-2"></i>
-                    <span className="prompt-semibold fs-6">ออกจากระบบ</span>
-                </NavLink>
             </Nav>
         </div>
     </div>

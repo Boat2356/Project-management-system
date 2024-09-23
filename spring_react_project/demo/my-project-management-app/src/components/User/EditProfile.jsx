@@ -2,48 +2,118 @@ import React from 'react'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useState, useEffect } from 'react';
+import { getUserById, updateUser } from '../../services/UserService';
 
 //แก้ไขข้อมูลของนักศึกษา
 const EditProfile = () => {
+    const [studentData, setStudentData] = useState({
+        student_id: '',
+        firstName: '',
+        lastName: ''
+    });
+    const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [currentUserId, setCurrentUserId] = useState(null);
+
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('authToken'));
+        if (userData) {
+            setCurrentUserId(userData.id); // Assuming the ID is in userData
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (currentUserId) {
+                try {
+                    const response = await getUserById(currentUserId);
+                    setStudentData({
+                        student_id: response.data.student_id,
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                    });
+                } catch (error) {
+                    setErrorMessage('ไม่สามารถดึงข้อมูลได้');
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, [currentUserId]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            // await updateUser(currentUserId, studentData);
+            await updateUser(currentUserId, {
+                student_id: studentData.student_id,
+                firstName: studentData.firstName,
+                lastName: studentData.lastName,
+            });
+            alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+        } catch (error) {
+            setErrorMessage('ไม่สามารถบันทึกข้อมูลได้');
+        }
+    };
+
+    if (loading) {
+        return <p>กำลังโหลดข้อมูล...</p>;
+    }
+
+    if (errorMessage) {
+        return <p>{errorMessage}</p>;
+    }
+
     return (
-
-        <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '80rem', height: '30rem', }}>
+        <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '80rem', height: '30rem' }}>
             <Card.Body className='ms-5'>
-
                 <h3 className='prompt-semibold text-primary mb-4'>แก้ไขข้อมูลนักศึกษา</h3>
-
-                <Form>
-                    <Form.Group className=" mb-3" controlId="formBasicEmail">
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className='prompt-semibold'>รหัสนักศึกษา</Form.Label>
-                        <Form.Control className='prompt-regular' type="text" placeholder="xxxxxxxxx-x" />
+                        <Form.Control
+                            className='prompt-regular'
+                            type="text"
+                            value={studentData?.student_id || ''}
+                            onChange={(e) => setStudentData({ ...studentData, student_id: e.target.value })}
+                        />
                     </Form.Group>
 
                     <div className='row'>
-
-                        <Form.Group className="mb-3 col-6" >
+                        <Form.Group className="mb-3 col-6">
                             <Form.Label className='prompt-semibold'>ชื่อ</Form.Label>
-                            <Form.Control className='prompt-regular' type="text" placeholder="ชื่อ" />
+                            <Form.Control
+                                className='prompt-regular'
+                                type="text"
+                                value={studentData?.firstName || ''}
+                                onChange={(e) => setStudentData({ ...studentData, firstName: e.target.value })}
+                                required
+                            />
                         </Form.Group>
 
-                        <Form.Group className="mb-3 col-6" >
+                        <Form.Group className="mb-3 col-6">
                             <Form.Label className='prompt-semibold'>นามสกุล</Form.Label>
-                            <Form.Control className='prompt-regular' type="text" placeholder="นามสกุล" />
+                            <Form.Control
+                                className='prompt-regular'
+                                type="text"
+                                value={studentData?.lastName || ''}
+                                onChange={(e) => setStudentData({ ...studentData, lastName: e.target.value })}
+                                required
+                            />
                         </Form.Group>
                     </div>
-
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label className='prompt-semibold'>อีเมล</Form.Label>
-                        <Form.Control className='prompt-regular' type="email" placeholder="name@email.com" />
-                    </Form.Group>
 
                     <Button className='prompt-regular' variant="primary" type="submit">
                         บันทึก
                     </Button>
                 </Form>
             </Card.Body>
-
         </Card>
-
-    )
+    );
 }
 export default EditProfile;

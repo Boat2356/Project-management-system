@@ -5,6 +5,7 @@ import { getCourses } from '../../services/CourseService';
 import { getUsers } from '../../services/UserService';
 import { getFileMetadata, downloadFile, createProject } from '../../services/ProjectService';
 import Select from 'react-select';
+import { createProject } from '../../services/ProjectService';
 
 //เพิ่มโปรเจคนักศึกษา
 const StdAddProject = () => {
@@ -142,6 +143,7 @@ const StdAddProject = () => {
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i + 543); // 11 years from (currentYear - 5) to (currentYear + 5)
 
+    
     return (
 
         <Card className='mx-auto mt-4 shadow-sm p-4' style={{ width: '80rem', height: '50rem', }}>
