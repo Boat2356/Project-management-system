@@ -1,22 +1,27 @@
 package com.example.demo.service;
-import com.example.demo.model.User;
+import java.util.Date;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+
+import com.example.demo.model.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.util.function.Function;
-import javax.crypto.SecretKey;
 
 @Service
 public class JwtService {
-    private String SECRET_KEY = "d6245a397ea6f85c1b11c022f178ad635e3bec9e030974db49dbf2a8ccc37fdd";
+    private final String SECRET_KEY = "d6245a397ea6f85c1b11c022f178ad635e3bec9e030974db49dbf2a8ccc37fdd";
 
     public String generateToken(User user) {
         String token = Jwts.builder()
         .subject(user.getUsername())
+        .claim("role", user.getRole()) // Add role to claims if needed
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000))               
         .signWith(getSigninKey())

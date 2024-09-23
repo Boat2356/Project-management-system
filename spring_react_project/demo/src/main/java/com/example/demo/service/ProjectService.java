@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
     @Autowired
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
     @Autowired
     private CourseRepository courseRepository;
     @Autowired

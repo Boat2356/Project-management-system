@@ -1,4 +1,5 @@
 package com.example.demo.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,26 +19,28 @@ import com.example.demo.service.UserDetailsServiceImp;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     private final UserDetailsServiceImp userDetailsServiceImp;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsServiceImp = userDetailsServiceImp;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }    
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(
-                req->req.requestMatchers("/api/users/**")
-                .permitAll()
-                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
-                .anyRequest()
-                .permitAll()                         
-            ).userDetailsService(userDetailsServiceImp)
-            .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .authorizeHttpRequests(
+                        req -> req.requestMatchers("/api/users/**")
+                                .permitAll()
+                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
+                                .anyRequest()
+                                .permitAll() // Require authentication for any other requests
+                ).userDetailsService(userDetailsServiceImp)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
@@ -49,7 +52,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
 
-    }     
-    
-    
+    }
+
 }

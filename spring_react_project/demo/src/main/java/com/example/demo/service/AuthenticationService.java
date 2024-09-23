@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.AuthenticationResponse;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
@@ -25,14 +26,13 @@ public class AuthenticationService {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        //user.setUsername(request.getUsername());
         user.setStudent_id(request.getStudent_id());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());        
+        user.setRole(request.getRole() != null ? request.getRole() : Role.USER);        
         user = repository.save(user);
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getRole().name());
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -40,9 +40,9 @@ public class AuthenticationService {
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()));
 
-        User user = repository.findByEmail(request.getUsername()).orElseThrow();
+        User user = repository.findByEmail(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getRole().name());
     }
     // Retrieve all users
     public Iterable<User> getAllUsers() {

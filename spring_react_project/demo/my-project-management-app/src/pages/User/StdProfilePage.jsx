@@ -9,7 +9,7 @@ const StdProfilePage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    //เช็คว่า log in อยู่มั้ย ด้วยการเช็ตโทเคน
+    //เช็คว่า log in อยู่มั้ย ด้วยการเช็คโทเคน
     const token = localStorage.getItem('authToken');
     setIsLoggedIn(!!token);
   }, []);

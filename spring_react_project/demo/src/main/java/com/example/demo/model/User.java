@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private String student_id;    
     private String email;
     private String password;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
     @JsonIgnore
@@ -71,6 +71,7 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+    @Override
     public String getPassword() {
         return password;
     }
