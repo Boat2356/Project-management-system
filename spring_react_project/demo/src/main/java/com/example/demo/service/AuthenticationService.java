@@ -97,7 +97,7 @@ public class AuthenticationService {
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
-        existingUser.setRole(updatedUser.getRole());
+        //existingUser.setRole(updatedUser.getRole());
         existingUser.setProjectStudents(updatedUser.getProjectStudents());
         return repository.save(existingUser);
     }

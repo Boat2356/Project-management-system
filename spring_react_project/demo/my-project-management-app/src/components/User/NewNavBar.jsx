@@ -52,7 +52,7 @@ const NewNavBar = () => {
                     >
                       Dashboard
                     </Nav.Link>
-                    <Button variant="outline-danger" onClick={handleLogout}>
+                    <Button className="prompt-semibold" variant="danger" onClick={handleLogout}>
                       ออกจากระบบ
                     </Button>
                   </>

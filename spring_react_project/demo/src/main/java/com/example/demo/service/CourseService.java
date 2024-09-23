@@ -1,15 +1,17 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import com.example.demo.model.Course;
 import com.example.demo.repository.CourseRepository;
 
 @Service
 public class CourseService {
     @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -30,7 +32,6 @@ public class CourseService {
         Course existingCourse = courseRepository.findById(id).orElse(null);
         existingCourse.setCourseCode(course.getCourseCode());
         existingCourse.setName(course.getName());
-        existingCourse.setDescription(course.getDescription());
         existingCourse.setCredits(course.getCredits());
         existingCourse.setProjects(course.getProjects());
         return courseRepository.save(existingCourse);
