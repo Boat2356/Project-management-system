@@ -5,7 +5,7 @@ import { getCourses } from '../../services/CourseService';
 import { getUsers } from '../../services/UserService';
 import { getFileMetadata, downloadFile, createProject } from '../../services/ProjectService';
 import Select from 'react-select';
-import { createProject } from '../../services/ProjectService';
+
 
 //เพิ่มโปรเจคนักศึกษา
 const StdAddProject = () => {
