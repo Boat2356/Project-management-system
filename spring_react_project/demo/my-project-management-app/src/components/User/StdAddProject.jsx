@@ -6,21 +6,15 @@ import { getUsers } from '../../services/UserService';
 import { getFileMetadata, downloadFile, createProject } from '../../services/ProjectService';
 import Select from 'react-select';
 
-
 //เพิ่มโปรเจคนักศึกษา
 const StdAddProject = () => {
-    const [projects, setProjects] = useState([]);
     const [courses, setCourses] = useState([]);
     const [supervisors, setSupervisors] = useState([]);
     const [users, setUsers] = useState([]);
-    const [selectedProject, setSelectedProject] = useState(null);
     const [alert, setAlert] = useState({ show: false, message: '', variant: 'success' });
-    const [fileMetadata, setFileMetadata] = useState([]);
-    const [selectedProjects, setSelectedProjects] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [messageVariant, setMessageVariant] = useState('info');
-    const [showModal, setShowModal] = useState(false); // State for Modal
 
     const [formData, setFormData] = useState({
         name: '',

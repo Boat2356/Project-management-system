@@ -12,6 +12,7 @@ const NewNavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null); // Add state for role
 
+
   useEffect(() => {
     // Check if the auth token exists
     const token = localStorage.getItem("authToken");
