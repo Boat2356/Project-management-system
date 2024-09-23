@@ -66,3 +66,14 @@ export const changeProjectStatus = async (projectId) => {
 export const changeMultipleProjectStatuses = async (projectIds) => {
   return await axios.put(`${API_URL}/status`, projectIds);
 }
+
+// Search projects
+export const searchProjects = async (name, courseCode, courseName, year) => {
+  const params = {
+    name,
+    courseCode,
+    courseName,
+    year,
+  };
+  return await axios.get(`${API_URL}/search`, { params });
+};

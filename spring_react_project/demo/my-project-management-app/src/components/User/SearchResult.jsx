@@ -1,65 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { searchProjects } from '../../services/ProjectService';
 
 const SearchResult = () => {
-  const [results, setResults] = useState([]);
-  const location = useLocation();
-  const navigate = useNavigate();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [projects, setProjects] = useState([]);
 
-  useEffect(() => {
-    // Extract query params from the URL
-    const queryParams = new URLSearchParams(location.search);
+    useEffect(() => {
+        // Extract query params from the URL
+        const queryParams = new URLSearchParams(location.search);
 
-    const projectName = queryParams.get('projectName') || '';
-    const courseName = queryParams.get('courseName') || '';
-    const courseCode = queryParams.get('courseCode') || '';
-    const academicYear = queryParams.get('academicYear') || '';
+        const projectName = queryParams.get('projectName') || '';
+        const courseName = queryParams.get('courseName') || '';
+        const courseCode = queryParams.get('courseCode') || '';
+        const year = queryParams.get('year') || '';
 
-    // Perform your search logic here, e.g., fetching data from an API
-    const projects = [
-      {id: 1, projectName: 'Project 1', courseName: 'Course A', courseCode: 'C001', academicYear: '2023' },
-      {id: 2, projectName: 'Project 2', courseName: 'Course B', courseCode: 'C002', academicYear: '2024' }
-    ];
+        // Perform your search logic here, e.g., fetching data from an API
+        const fetchProjects = async () => {
+            try {
+                const response = await searchProjects(projectName, courseCode, courseName, year);
+                setProjects(response.data);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        };
 
-    const filteredResults = projects.filter((item) => {
-      return (
-        (projectName === '' || item.projectName.includes(projectName)) &&
-        (courseName === '' || item.courseName.includes(courseName)) &&
-        (courseCode === '' || item.courseCode.includes(courseCode)) &&
-        (academicYear === '' || item.academicYear.includes(academicYear))
-      );
-    });
+        fetchProjects();
+    }, [location.search]);
 
-    setResults(filteredResults);
-  }, [location.search]);
+    const handleCardClick = (projectId) => {
+        navigate(`/projects/${projectId}${location.search}`);
+    };
 
-
-  const handleDetailClick = (id) => {
-    navigate(`/projects/${id}`);  // นำทางไปยัง URL ที่มี id ของโปรเจค
-};
-
-  return (
-    <div className='container mt-4'>
-      <h3 className="prompt-semibold fs-2">ผลการค้นหา</h3>
-      <div className="row">
-          {results.map((result)  => (
-            <div className="col-md-4" key={result.id}>
-              <Card className="mb-4 mt-4">
-                <Card.Body>
-                  <Card.Title className='prompt-semibold'>{result.projectName}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>รหัสวิชา: {result.courseCode}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>ชื่อวิชา: {result.courseName}</Card.Title>
-                  <Card.Title className='prompt-regular fs-6'>ปีการศึกษา: {result.academicYear}</Card.Title>
-                  <Button onClick={() => handleDetailClick(result.id)} className='prompt-regular' variant="primary">ดูรายละเอียด</Button>
-                </Card.Body>
-              </Card>
-            </div>
-          ))}
-        </div>
-    </div>
-    
-  );
+    return (
+        <Container className="mt-4">
+            <h1>Search Results</h1>
+            <Row>
+                {projects.map((project) => (
+                    <Col key={project.id} sm={12} md={6} lg={4} className="mb-4">
+                        <Card onClick={() => handleCardClick(project.id)} style={{ cursor: 'pointer' }}>
+                            <Card.Body>
+                                <Card.Title>{project.name}</Card.Title>
+                                <Card.Text>
+                                    <strong>Course Name:</strong> {project.course.name}<br />
+                                    <strong>Course Code:</strong> {project.course.courseCode}<br />
+                                    <strong>Academic Year:</strong> {project.year}
+                                </Card.Text>
+                                <Button variant="primary" onClick={() => handleCardClick(project.id)}>
+                                    View Details
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+    );
 };
 
 export default SearchResult;

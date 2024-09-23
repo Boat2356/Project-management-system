@@ -24,7 +24,7 @@ public class Course {
     @Column(name = "course_code")
     private String course_code;
     private String name;
-    private String description;
+    //private String description;
     private int credits;
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
@@ -47,13 +47,7 @@ public class Course {
     }
     public void setName(String name) {
         this.name = name;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    }    
     public int getCredits() {
         return credits;
     }

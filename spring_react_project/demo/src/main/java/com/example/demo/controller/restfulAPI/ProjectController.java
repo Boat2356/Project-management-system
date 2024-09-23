@@ -263,4 +263,35 @@ public class ProjectController {
         }
     }
 
+    // Search projects by project name, course code, course name, year
+    @GetMapping("/projects/search")
+    public ResponseEntity<List<Project>> searchProjects(@RequestParam(required = false) String name,
+            @RequestParam(required = false) String courseCode,
+            @RequestParam(required = false) String courseName,
+            @RequestParam(required = false) Integer year) {
+        List<Project> projects = projectService.getAllProjects();
+        if (name != null && !name.trim().isEmpty()) {
+            projects = projects.stream().filter(project -> project.getName().toLowerCase().contains(name.toLowerCase()))
+                    .toList();
+        }
+        if (courseCode != null && !courseCode.trim().isEmpty()) {
+            projects = projects.stream()
+                    .filter(project -> project.getCourse().getCourseCode().toLowerCase().contains(courseCode.toLowerCase()))
+                    .toList();
+        }
+        if (courseName != null && !courseName.trim().isEmpty()) {
+            projects = projects.stream()
+                    .filter(project -> project.getCourse().getName().toLowerCase().contains(courseName.toLowerCase()))
+                    .toList();
+        }
+        if (year != null) {
+            projects = projects.stream().filter(project -> project.getYear() == year).toList();
+        }
+        if(projects.isEmpty()) {
+            return ResponseEntity.status(404).body(projects);
+        }
+        return ResponseEntity.ok(projects);
+    }
+
+
 }
