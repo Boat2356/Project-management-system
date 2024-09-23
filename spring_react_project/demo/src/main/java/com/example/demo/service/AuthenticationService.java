@@ -38,7 +38,7 @@ public class AuthenticationService {
         user.setRole(request.getRole() != null ? request.getRole() : Role.USER);        
         user = repository.save(user);
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token, user.getRole().name());
+        return new AuthenticationResponse(token, user.getRole().name(), user.getId());
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -55,7 +55,7 @@ public class AuthenticationService {
 
         // save the generated token
         saveUserToken(user, token);
-        return new AuthenticationResponse(token, user.getRole().name());
+        return new AuthenticationResponse(token, user.getRole().name(), user.getId());
     }
 
     public void revokeAllTokenByUser(User user) {

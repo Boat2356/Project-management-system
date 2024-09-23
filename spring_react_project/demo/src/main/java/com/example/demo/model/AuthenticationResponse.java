@@ -3,10 +3,12 @@ package com.example.demo.model;
 public class AuthenticationResponse {
     public String token;
     public String role;
+    public int id;
 
-    public AuthenticationResponse(String token, String role) {
+    public AuthenticationResponse(String token, String role, int id) {
         this.token = token;
         this.role = role;
+        this.id = id;
     }
     
     public String getToken() {
@@ -23,6 +25,14 @@ public class AuthenticationResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

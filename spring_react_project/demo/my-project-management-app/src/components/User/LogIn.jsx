@@ -7,7 +7,7 @@ const LogIn = () => {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const apiURL = "http://localhost:8080/api/users/login";
@@ -29,6 +29,7 @@ const LogIn = () => {
       // Save authentication details (e.g., token) to localStorage or state management
       localStorage.setItem("authToken", JSON.stringify(userData)); // save token
       localStorage.setItem("userRole", userData.role); // Save role
+      localStorage.setItem("userId",userData.id); //save user id
 
       setIsLoggedIn(true);
       setLoading(false);
@@ -36,11 +37,9 @@ const LogIn = () => {
       // Navigate based on user role
       navigate(userData.role === "ADMIN" ? "/admin/profile" : "/home-page");
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Login error:", error.response?.data || error.message);
       setLoading(false);
       setErrorMessage("อีเมลหรือรหัสผ่านไม่ถูกต้อง โปรดลองใหม่");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -51,7 +50,6 @@ const LogIn = () => {
     >
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         <div className="h4 mb-4 prompt-semibold text-primary">เข้าสู่ระบบ</div>
-        {/* Display error message */}
         {errorMessage && (
           <Alert
             className="mb-2"
@@ -62,19 +60,6 @@ const LogIn = () => {
             {errorMessage}
           </Alert>
         )}
-        {/* ALert */}
-        {/* {show ? (
-          <Alert
-            className="mb-2"
-            variant="danger"
-            onClose={() => setShow(false)}
-            dismissible
-          >
-            Incorrect username or password.
-          </Alert>
-        ) : (
-          <div />
-        )} */}
 
         <Form.Group className="prompt-semibold  mb-2" controlId="username">
           <Form.Label>อีเมล</Form.Label>
