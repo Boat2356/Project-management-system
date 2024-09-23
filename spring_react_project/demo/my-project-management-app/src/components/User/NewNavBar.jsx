@@ -68,7 +68,7 @@ const NewNavBar = () => {
                         Dashboard
                       </Nav.Link>
                     )}
-                    <Button variant="danger" onClick={handleLogout}>
+                    <Button variant="danger" className="prompt-semibold ms-3" onClick={handleLogout}>
                       ออกจากระบบ
                     </Button>
                   </>
