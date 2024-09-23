@@ -1,26 +1,31 @@
 package com.example.demo.service;
+import java.util.List;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.model.AuthenticationResponse;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.TokenRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.model.Token;
 
 @Service
 public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;    
+    private final AuthenticationManager authenticationManager; 
+    private final TokenRepository tokenRepository;   
 
-    public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, TokenRepository tokenRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.tokenRepository = tokenRepository;
     }
     public AuthenticationResponse register(User request){
         User user = new User();
@@ -42,8 +47,35 @@ public class AuthenticationService {
 
         User user = repository.findByEmail(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtService.generateToken(user);
+        
+
+        // revoke all token by user
+        revokeAllTokenByUser(user);
+
+        // save the generated token
+        saveUserToken(user, token);
         return new AuthenticationResponse(token, user.getRole().name());
     }
+
+    public void revokeAllTokenByUser(User user) {
+        List<Token> validTokenListByUser = tokenRepository.findAllTokenByUser(user.getId());
+        if (!validTokenListByUser.isEmpty()) {
+            validTokenListByUser.forEach(token -> {
+                token.setLoggedOut(true);                
+            });
+        }
+        tokenRepository.saveAll(validTokenListByUser);
+    }
+
+    private void saveUserToken(User user, String jwt) {
+        // save the token
+        Token token = new Token();
+        token.setToken(jwt);
+        token.setLoggedOut(false);
+        token.setUser(user);
+        tokenRepository.save(token);
+    }
+
     // Retrieve all users
     public Iterable<User> getAllUsers() {
         return repository.findAll();

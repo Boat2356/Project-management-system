@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,9 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<ProjectStudent> projectStudents = new HashSet<ProjectStudent>();  
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     public String getStudent_id() {
         return student_id;
