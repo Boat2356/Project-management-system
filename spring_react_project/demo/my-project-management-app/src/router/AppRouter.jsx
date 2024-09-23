@@ -25,11 +25,13 @@ function AppRouter(){
   return (
     <Router>           
         <Routes>
+            {/*Test Admin*/}
             <Route path="/admin" element = {<AdminPage />} />
             <Route path="/admin/project-crud" element = {<ProjectPage />} />
             <Route path="/admin/course-crud" element = {<CoursePage />} />
             <Route path="/admin/supervisor-crud" element = {<SupervisorPage />} />
             <Route path="/admin/user-crud" element = {<UserPageAdmin />} />
+
             <Route path="/home-page" element = {<HomePage />} /> 
             <Route path="/search" element= {<SearchProjectPage/>}/>
             <Route path="/results" element = {<SearchResultPage/>} />

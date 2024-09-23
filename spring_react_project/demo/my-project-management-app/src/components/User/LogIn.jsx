@@ -27,21 +27,20 @@ const LogIn = () => {
       const userData = response.data;
 
       // Save authentication details (e.g., token) to localStorage or state management
-      localStorage.setItem("authToken", JSON.stringify(userData)); // Example: save token
+      localStorage.setItem("authToken", JSON.stringify(userData)); // save token
       localStorage.setItem("userRole", userData.role); // Save role
 
       setIsLoggedIn(true);
       setLoading(false);
 
       // Navigate based on user role
-      if (userData.role === "ADMIN") {
-        navigate("/admin");
-      } else if (userData.role === "USER") {
-        navigate("/home-page");
-      }
+      navigate(userData.role === "ADMIN" ? "/admin/profile" : "/home-page");
     } catch (error) {
+      console.error("Login error:", error);
       setLoading(false);
       setErrorMessage("อีเมลหรือรหัสผ่านไม่ถูกต้อง โปรดลองใหม่");
+    } finally {
+      setLoading(false);
     }
   };
 

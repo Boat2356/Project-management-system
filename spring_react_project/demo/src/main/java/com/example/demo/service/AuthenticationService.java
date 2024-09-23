@@ -5,12 +5,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.model.AuthenticationResponse;
 import com.example.demo.model.Role;
+import com.example.demo.model.Token;
 import com.example.demo.model.User;
 import com.example.demo.repository.TokenRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.model.Token;
 
 @Service
 public class AuthenticationService {
@@ -104,5 +105,9 @@ public class AuthenticationService {
     public void deleteUser(int id) {
         User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         repository.delete(user);
+    }
+
+    public void revokeToken(String token) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
