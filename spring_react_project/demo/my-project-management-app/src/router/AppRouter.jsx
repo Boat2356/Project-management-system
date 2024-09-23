@@ -48,10 +48,11 @@ function AppRouter(){
             <Route path="/user/std-manage-project" element = {<StdManageProjectPage />} /> 
             <Route path="/admin/profile" element = {<AdminProfilePage />} />
             <Route path="/admin/edit-profile" element = {<AdminEditProfilePage />} />  
-            <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />  
+            <Route path="/admin/manage-project" element = {<AdminManageProjectPage />} />
+            <Route path="/admin/manage-project/project-detail/:id" element={<AdminProjectDetailPage />} />  
             <Route path="/admin/manage-subject" element = {<AdminManageSubjectPage />} />  
             <Route path="/admin/manage-advisor" element = {<AdminManageAdvisorPage />} />  
-            <Route path="/admin/manage-project/project-detail" element = {<AdminProjectDetailPage />} /> 
+            
         </Routes>   
     </Router>
   );

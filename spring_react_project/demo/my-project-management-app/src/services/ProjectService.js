@@ -63,3 +63,6 @@ export const changeProjectStatus = async (projectId) => {
   return await axios.put(`${API_URL}/${projectId}/status`);
 };
 
+export const changeMultipleProjectStatuses = async (projectIds) => {
+  return await axios.put(`${API_URL}/status`, projectIds);
+}

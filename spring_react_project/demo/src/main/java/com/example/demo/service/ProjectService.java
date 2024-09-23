@@ -53,8 +53,8 @@ public class ProjectService {
     public List<Project> getAllProjects() {
         return (List<Project>) projectRepository.findAll();
     }
-    public Project getProjectsById(int id) {
-        return projectRepository.findById(id).orElse(null);
+    public Optional<Project> getProjectsById(int id) {
+        return projectRepository.findById(id);
     }        
     
     public Project save(Project project) {
@@ -98,7 +98,8 @@ public class ProjectService {
         Course course = courseRepository.findById(courseId).orElseThrow(null);
         Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);          
         project.setCourse(course);
-        project.setSupervisor(supervisor);        
+        project.setSupervisor(supervisor);      
+        project.setStatus(0); // Set a default or required status
         if (proposalFile != null && !proposalFile.isEmpty()) {
             project.setProposalFile(proposalFile.getBytes());
             project.setProposalfilename(proposalFile.getOriginalFilename());
@@ -134,7 +135,7 @@ public class ProjectService {
         Project existingProject = projectRepository.findById(id).orElseThrow(null);
         existingProject.setName(project.getName());
         existingProject.setDescription(project.getDescription());
-        existingProject.setisapproved(project.isapproved());
+        existingProject.setStatus(project.getStatus());
         existingProject.setYear(project.getYear());
         existingProject.setSemester(project.getSemester());
         Course course = courseRepository.findById(courseId).orElseThrow(null);
@@ -386,8 +387,17 @@ public class ProjectService {
     // Change unapproved projects to approved or vice versa
     public Project toggleApproval(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("Project not found"));
-        project.setisapproved(!project.isapproved());
+        project.setStatus(project.getStatus() == 0 ? 1 : 0);
         return projectRepository.save(project);
+    }
+
+    // toggle approval for multiple projects
+    public List<Project> toggleApprovalForProjects(List<Integer> projectIds) {
+        List<Project> projects = (List<Project>) projectRepository.findAllById(projectIds);
+        for (Project project : projects) {
+            project.setStatus(project.getStatus() == 0 ? 1 : 0);
+        }
+        return (List<Project>) projectRepository.saveAll(projects);
     }
 
 

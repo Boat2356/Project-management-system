@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +19,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
-
 @Entity
 @Table(name = "project")
 public class Project {
@@ -29,8 +27,8 @@ public class Project {
     private int id;
     private String name;
     private String description;
-    @Column(name = "isapproved", columnDefinition = "false")
-    private boolean isapproved = false;
+    @Column(name = "status", columnDefinition = "tinyint(1) default 0")    
+    private int status;
     private int year;
     private int semester;
     private String proposalfilename;
@@ -59,8 +57,7 @@ public class Project {
     //@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
-    private Course course;
-
+    private Course course;    
     /* 
     @Transient
     private List<Map<String, Object>> users;
@@ -110,11 +107,11 @@ public class Project {
     public void setDescription(String description) {
         this.description = description;
     }
-    public boolean isapproved() {
-        return isapproved;
+    public int getStatus() {
+        return status;
     }
-    public void setisapproved(boolean isapproved) {
-        this.isapproved = isapproved;
+    public void setStatus(int status) {
+        this.status = status;
     }
     public int getYear() {
         return year;

@@ -4,7 +4,7 @@ import { getAllProjects, getProjectById, createProject, updateProject, deletePro
 import { getSupervisors } from '../../services/SupervisorService';
 import { getCourses } from '../../services/CourseService';
 import { getUsers } from '../../services/UserService';
-import { getFileMetadata, downloadFile, changeProjectStatus } from '../../services/ProjectService';
+import { getFileMetadata, downloadFile, changeMultipleProjectStatuses } from '../../services/ProjectService';
 import Select from 'react-select';
 
 const ProjectCrud = () => {
@@ -18,13 +18,13 @@ const ProjectCrud = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: '', variant: 'success' });
   const [fileMetadata, setFileMetadata] = useState([]);
-  const [selectedProjects, setSelectedProjects] = useState({});
+  const [selectedProjects, setSelectedProjects] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     year: '',
     semester: '',
-    isapproved: false,
+    status: 0,
     courseId: '',
     supervisorId: '',
     userIds: [],
@@ -46,7 +46,7 @@ const ProjectCrud = () => {
     setIsLoading(true);
     try {
       const response = await getAllProjects();
-      setProjects(response.data);
+      setProjects(response.data);      
     } catch (error) {
       console.error('Error fetching projects:', error);
       showAlert('Error fetching projects', 'danger');
@@ -101,7 +101,7 @@ const ProjectCrud = () => {
       description: '',
       year: '',
       semester: '',
-      isapproved: false,
+      status: 0,
       courseId: '',
       supervisorId: '',
       userIds: [],
@@ -172,7 +172,7 @@ const ProjectCrud = () => {
         description: project.description,
         year: project.year,
         semester: project.semester,
-        isapproved: project.isapproved,
+        status: project.status,
         courseId: project.course.id,
         supervisorId: project.supervisor.id,
         userIds: project.projectStudents.map(ps => ps.user.id),
@@ -217,33 +217,26 @@ const ProjectCrud = () => {
     });
   }
 
-  const handleCheckboxChange = (projectId) => {
-    setSelectedProjects(prevSelectedProjects => ({
-      ...prevSelectedProjects,
-      [projectId]: !prevSelectedProjects[projectId]
-    }));
+  const handleSelectProject = (projectId) => {
+    setSelectedProjects(prevSelected => {
+      if (prevSelected.includes(projectId)) {
+        return prevSelected.filter(id => id !== projectId);
+      } else {
+        return [...prevSelected, projectId];
+      }
+    });
   };
 
-  const applyChanges = async () => {
-    setIsLoading(true);
+  const handleChangeStatus = async () => {
     try {
-      const projectIds = Object.keys(selectedProjects).filter(projectId => selectedProjects[projectId]);
-      await Promise.all(projectIds.map(projectId => changeProjectStatus(projectId)));
-      showAlert('Projects updated successfully');
-      // Update the state of the projects
-      setProjects(prevProjects =>
-        prevProjects.map(project =>
-          projectIds.includes(project.id.toString())
-            ? { ...project, isapproved: !project.isapproved }
-            : project
-        )
-      );
-      setSelectedProjects({});
+      const response = await changeMultipleProjectStatuses(selectedProjects);
+      setProjects(response.data);
+      setAlert({ show: true, message: 'Project statuses updated successfully', variant: 'success' });
+      fetchProjects(); // Reload all projects after status update
     } catch (error) {
-      console.error('Error updating projects:', error);
-      showAlert('Error updating projects', 'danger');
+      console.error('Error updating project statuses:', error);
+      setAlert({ show: true, message: 'Failed to update project statuses', variant: 'danger' });
     }
-    setIsLoading(false);
   };
 
   return (
@@ -252,7 +245,7 @@ const ProjectCrud = () => {
       <Button variant="primary" onClick={() => openModal('create')} className="mb-3">
         Create New Project
       </Button>
-      <Button variant="success" onClick={applyChanges} className="mb-3 mx-3">
+      <Button variant="success" onClick={handleChangeStatus} className="mb-3 mx-3">
         Apply Changes
       </Button>
 
@@ -289,8 +282,8 @@ const ProjectCrud = () => {
                 <td>
                   <input
                     type="checkbox"
-                    checked={selectedProjects[project.id] || false}
-                    onChange={() => handleCheckboxChange(project.id)}
+                    checked={selectedProjects.includes(project.id)}
+                    onChange={() => handleSelectProject(project.id)}
                   />
                 </td>
                 <td> <img src={'http://localhost:8080/api/projects/' + project.id + '/files/image'} alt="project"
@@ -300,7 +293,7 @@ const ProjectCrud = () => {
                 <td>{project.supervisor?.name}</td>
                 <td>{project.year}</td>
                 <td>{project.semester}</td>
-                <td>{project.isapproved ? 'Approved' : 'Pending'}</td>
+                <td>{project.status === 1 ? 'อนุมัติ' : 'กำลังพิจารณา'}</td>
                 <td>
                   <Button variant="info" size="sm" onClick={() => openModal('view', project)} className="me-2">
                     View
