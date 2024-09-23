@@ -33,13 +33,13 @@ public class Project {
     private String imagefilename;
     
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition="LONGBLOB",name = "proposalFile")
     private byte[] proposalFile;
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition="LONGBLOB",name = "fulldocumentFile")
     private byte[] fulldocumentFile;
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition="LONGBLOB",name = "image")
     private byte[] image;  
 
     //@JsonIgnore

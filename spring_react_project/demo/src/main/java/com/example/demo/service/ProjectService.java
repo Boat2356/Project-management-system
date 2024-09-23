@@ -1,22 +1,19 @@
 package com.example.demo.service;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.example.demo.model.Course;
 import com.example.demo.model.FileMetadata;
 import com.example.demo.model.Project;
@@ -132,7 +129,7 @@ public class ProjectService {
     List<ProjectStudent> currentAssociations = projectStudentRepository.findByProjectId(id);
     
     // Create a set of new user IDs for quick lookup
-    Set<Integer> newUserIdSet = new HashSet<>(userIds);
+    Set<Integer> newUserIdSet = new HashSet<Integer>(userIds);
     
     // Determine users to be added and removed
     Set<Integer> currentUserIds = currentAssociations.stream()
@@ -366,7 +363,6 @@ public class ProjectService {
             project.setStatus(project.getStatus() == 0 ? 1 : 0);
         }
         return (List<Project>) projectRepository.saveAll(projects);
-    }
-
+    }    
 
 }
