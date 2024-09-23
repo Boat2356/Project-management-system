@@ -12,6 +12,8 @@ const AdminManageAdvisor = () => {
     const [actionType, setActionType] = useState(''); // 'add', 'update', 'delete'
     const [supervisorToDelete, setSupervisorToDelete] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [emailError, setEmailError] = useState('');
+
 
     useEffect(() => {
         loadSupervisors();
@@ -102,7 +104,27 @@ const AdminManageAdvisor = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        if (name === 'email') {
+            if (!isEmailValid(value)) {
+              setEmailError('รูปแบบอีเมลไม่ถูกต้อง');
+            } else {
+              setEmailError(''); // เคลียร์ข้อความเตือนเมื่ออีเมลถูกต้อง
+            }
+          }
     };
+
+    // ฟังก์ชันตรวจสอบอีเมล
+const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  
+  // ใช้ isEmailValid เพื่อตรวจสอบก่อน submit
+  const isFormValid = () => {
+    return isEmailValid(formData.email); 
+  };
+  
 
     return (
         <div className='mx-auto mt-4 ' style={{ width: '75rem' }}>
@@ -171,7 +193,7 @@ const AdminManageAdvisor = () => {
             <Modal size="md" show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title
-                        className='prompt-semibold text-primary'>
+                        className='prompt-semibold text-primary' disabled={!isEmailValid() || isLoading}>
                         {isEdit ? 'แก้ไขอาจารย์ที่ปรึกษา' : 'เพิ่มอาจารย์ที่ปรึกษา'}
                     </Modal.Title>
                 </Modal.Header>
@@ -199,7 +221,9 @@ const AdminManageAdvisor = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="name@email.com"
-                                disabled={isLoading} />
+                                disabled={isLoading} 
+                                isInvalid={!!emailError}/>
+                                {emailError && <Form.Text className="text-danger">{emailError}</Form.Text>}
                         </Form.Group>
 
                     </Form>
@@ -216,7 +240,7 @@ const AdminManageAdvisor = () => {
                         className='prompt-regular'
                         variant="primary"
                         onClick={isEdit ? handleUpdateSupervisor : handleAddSupervisor}
-                        disabled={isLoading}
+                        disabled={!!emailError || isLoading}
                     >
                         {isEdit ? 'แก้ไข' : 'เพิ่มอาจารย์'}
                     </Button>

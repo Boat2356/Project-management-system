@@ -13,6 +13,8 @@ const AdminManageSubject = () => {
   const [actionType, setActionType] = useState(''); // 'add', 'update', 'delete'
   const [courseToDelete, setCourseToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [creditsError, setCreditsError] = useState('');
+
 
   useEffect(() => {
     loadCourses();
@@ -104,6 +106,13 @@ const AdminManageSubject = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === 'credits') {
+      if (value < 1 || value > 3) {
+        setCreditsError('หน่วยกิตต้องอยู่ระหว่าง 1 ถึง 3');
+      } else {
+        setCreditsError(''); // เคลียร์ข้อความเตือนเมื่อค่าถูกต้อง
+      }
+    }
   };
 
   return (
@@ -216,8 +225,13 @@ const AdminManageSubject = () => {
                 value={formData.credits}
                 onChange={handleChange}
                 placeholder="หน่วยกิต"
+                id = "Quantity"
+                min={1} // กำหนดค่าต่ำสุด
+                max={3} // กำหนดค่าสูงสุด
+                isInvalid={!!creditsError}
                 disabled={isLoading}
-              />
+
+              /> {creditsError && <Form.Text className="text-danger">{creditsError}</Form.Text>}
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -234,7 +248,8 @@ const AdminManageSubject = () => {
             className='prompt-regular'
             variant='primary'
             onClick={isEdit ? handleUpdateCourse : handleAddCourse}
-            disabled={isLoading}>
+            disabled={!!creditsError ||isLoading}>
+              
 
             {isEdit ? 'แก้ไขวิชา' : 'เพิ่มวิชา'}
           </Button>
