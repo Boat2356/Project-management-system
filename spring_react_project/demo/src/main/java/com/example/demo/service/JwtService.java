@@ -1,5 +1,7 @@
 package com.example.demo.service;
 import com.example.demo.model.User;
+import com.example.demo.repository.TokenRepository;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -12,7 +14,13 @@ import javax.crypto.SecretKey;
 
 @Service
 public class JwtService {
+    private final TokenRepository tokenRepository;
+
     private String SECRET_KEY = "d6245a397ea6f85c1b11c022f178ad635e3bec9e030974db49dbf2a8ccc37fdd";
+
+    public JwtService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     public String generateToken(User user) {
         String token = Jwts.builder()
@@ -48,7 +56,10 @@ public class JwtService {
 
     public boolean isValid(String token, UserDetails user){
         String username = extractUsername(token);
-        return (username.equals(user.getUsername())) && !isTokenExpired(token);
+        boolean isValidToken = tokenRepository.findByToken(token)
+        .map(t -> !t.isLoggedOut()).orElse(false);
+
+        return (username.equals(user.getUsername())) && !isTokenExpired(token) && isValidToken;
     }
 
     private boolean isTokenExpired(String token) {
