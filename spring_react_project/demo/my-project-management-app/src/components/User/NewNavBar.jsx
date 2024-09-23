@@ -10,17 +10,23 @@ import Button from "react-bootstrap/Button";
 const NewNavBar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null); // Add state for role
 
   useEffect(() => {
     // Check if the auth token exists
     const token = localStorage.getItem("authToken");
+    
+    const role = localStorage.getItem("userRole"); // Retrieve role from localStorage
     setIsLoggedIn(!!token); // Set logged in state based on token existence
+    setUserRole(role); // Set the user role
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userRole"); // Remove role on logout
     navigate("/login-page");
   };
+
 
   return (
     <div className="">
@@ -46,13 +52,22 @@ const NewNavBar = () => {
                 </Nav.Link>
                 {isLoggedIn ? (
                   <>
-                    <Nav.Link
-                      href="/user/std-profile"
-                      className="prompt-semibold pt-3 fw-bold"
-                    >
-                      Dashboard
-                    </Nav.Link>
-                    <Button className="prompt-semibold" variant="danger" onClick={handleLogout}>
+                    {userRole === "ADMIN" ? (
+                      <Nav.Link
+                        href="/admin/profile"
+                        className="prompt-semibold pt-3 fw-bold"
+                      >
+                        Dashboard
+                      </Nav.Link>
+                    ) : (
+                      <Nav.Link
+                        href="/user/std-profile"
+                        className="prompt-semibold pt-3 fw-bold"
+                      >
+                        Dashboard
+                      </Nav.Link>
+                    )}
+                    <Button variant="danger" onClick={handleLogout}>
                       ออกจากระบบ
                     </Button>
                   </>
