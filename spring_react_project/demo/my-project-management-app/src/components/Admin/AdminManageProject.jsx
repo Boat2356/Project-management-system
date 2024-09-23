@@ -28,6 +28,8 @@ const AdminManageProject = () => {
     const [fileMetadata, setFileMetadata] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
     const [newStatus, setNewStatus] = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [projectToDelete, setProjectToDelete] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -162,20 +164,33 @@ const AdminManageProject = () => {
         setIsLoading(false);
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this project?')) {
-            setIsLoading(true);
-            try {
-                await deleteProject(id);
-                showAlert('Project deleted successfully');
-                fetchProjects();
-            } catch (error) {
-                console.error('Error deleting project:', error);
-                showAlert('Error deleting project', 'danger');
-            }
-            setIsLoading(false);
+    const handleDelete = (projectId) => {
+        setProjectToDelete(projectId);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        try {
+            await deleteProject(projectToDelete);
+            setAlert({ show: true, message: 'Project deleted successfully', variant: 'success' });
+            fetchProjects(); // Refresh projects
+            setShowDeleteModal(false);
+            setProjectToDelete(null);
+            setTimeout(() => setAlert({ show: false, message: '', variant: 'success' }), 3000); // Hide alert after 3 seconds
+        } catch (error) {
+            console.error('Error deleting project:', error);
+            setAlert({ show: true, message: 'Failed to delete project', variant: 'danger' });
+            setShowDeleteModal(false);
+            setProjectToDelete(null);
+            setTimeout(() => setAlert({ show: false, message: '', variant: 'danger' }), 3000); // Hide alert after 3 seconds
         }
     };
+
+    const cancelDelete = () => {
+        setShowDeleteModal(false);
+        setProjectToDelete(null);
+    };
+
 
     const openModal = async (mode, project = null) => {
         setModalMode(mode);
@@ -220,41 +235,41 @@ const AdminManageProject = () => {
         } catch (error) {
             console.error('Error downloading file:', error);
         }
-    };    
+    };
 
     const handleSelectProject = (projectId) => {
         setSelectedProjects(prevSelected => {
-          if (prevSelected.includes(projectId)) {
-            return prevSelected.filter(id => id !== projectId);
-          } else {
-            return [...prevSelected, projectId];
-          }
+            if (prevSelected.includes(projectId)) {
+                return prevSelected.filter(id => id !== projectId);
+            } else {
+                return [...prevSelected, projectId];
+            }
         });
-      };
+    };
 
-      const handleChangeStatus = async () => {
+    const handleChangeStatus = async () => {
         try {
-          const response = await changeMultipleProjectStatuses(selectedProjects);
-          setProjects(response.data);
-          setAlert({ show: true, message: 'Project statuses updated successfully', variant: 'success' });
-          fetchProjects(); // Reload all projects after status update
-          setSelectedProjects([]); // Reset selected projects          
-          setTimeout(() => setAlert({ show: false, message: '', variant: 'success' }), 3000); // Hide alert after 3 seconds
+            const response = await changeMultipleProjectStatuses(selectedProjects);
+            setProjects(response.data);
+            setAlert({ show: true, message: 'Project statuses updated successfully', variant: 'success' });
+            fetchProjects(); // Reload all projects after status update
+            setSelectedProjects([]); // Reset selected projects          
+            setTimeout(() => setAlert({ show: false, message: '', variant: 'success' }), 3000); // Hide alert after 3 seconds
         } catch (error) {
-          console.error('Error updating project statuses:', error);
-          setAlert({ show: true, message: 'Failed to update project statuses', variant: 'danger' });
-          setTimeout(() => setAlert({ show: false, message: '', variant: 'danger' }), 3000); // Hide alert after 3 seconds
+            console.error('Error updating project statuses:', error);
+            setAlert({ show: true, message: 'Failed to update project statuses', variant: 'danger' });
+            setTimeout(() => setAlert({ show: false, message: '', variant: 'danger' }), 3000); // Hide alert after 3 seconds
         }
-      };
+    };
 
     return (
 
         <div className='mx-auto mt-4 ' style={{ width: '75rem' }}>
             <h3 className='prompt-semibold text-primary mb-4'>จัดการโปรเจคนักศึกษา</h3>
             {alert.show && <Alert variant={alert.variant} onClose={() => setAlert({ show: false, message: '', variant: 'success' })} dismissible>{alert.message}</Alert>}
-            <Button variant="success" onClick={handleChangeStatus} className="mb-3 mx-3">
-        Apply Changes
-      </Button>
+            <Button variant="success" onClick={handleChangeStatus} className="mb-3">
+                Apply Changes
+            </Button>
             {/* <Form>
                         <div className='row mt-4'>
                             <Form.Group className="mb-3 col-3" >
@@ -267,9 +282,9 @@ const AdminManageProject = () => {
                     </Form> */}
 
             <Table bordered hover className='mt-4 '>
-                <thead >                    
+                <thead >
                     <tr >
-                        <th className='prompt-semibold bg-body-tertiary'>เปลี่ยนสถานะ</th>                        
+                        <th className='prompt-semibold bg-body-tertiary'>เปลี่ยนสถานะ</th>
                         <th className='prompt-semibold bg-body-tertiary'>ชื่อโปรเจค</th>
                         <th className='prompt-semibold bg-body-tertiary'>รายวิชา</th>
                         <th className='prompt-semibold bg-body-tertiary'>สถานะ</th>
@@ -277,31 +292,49 @@ const AdminManageProject = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {projects.map(project => (
-                    <tr key={project.id}>        
-                    <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedProjects.includes(project.id)}
-                    onChange={() => handleSelectProject(project.id)}
-                    style={{ transform: 'scale(1.5)' }} // Increase checkbox size
-                  />
-                </td>                
-                        <td className='prompt-regular'>{project.name}</td>
-                        <td className='prompt-regular'>{project.course.name}</td>
-                        <td className='prompt-regular'>{project.status ? 'อนุมัติแล้ว' : 'รอการพิจารณา'}</td>
-                        <td>
+                    {projects.map(project => (
+                        <tr key={project.id}>
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedProjects.includes(project.id)}
+                                    onChange={() => handleSelectProject(project.id)}
+                                    style={{ transform: 'scale(1.5)' }} // Increase checkbox size
+                                />
+                            </td>
+                            <td className='prompt-regular'>{project.name}</td>
+                            <td className='prompt-regular'>{project.course.name}</td>
+                            <td className='prompt-regular'>{project.status ? 'อนุมัติแล้ว' : 'รอการพิจารณา'}</td>
+                            <td>
 
-                            <Button className='prompt-regular me-2' variant='primary' onClick={() => handleNavigate(project.id)}>
-                                รายละเอียด
+                                <Button className='prompt-regular me-2' variant='primary' onClick={() => handleNavigate(project.id)}>
+                                    รายละเอียด
+                                </Button>
+                                <Button variant="danger" size="sm" onClick={() => handleDelete(project.id)}>
+                                ลบ
                             </Button>
-                            <Button className='prompt-regular px-3' variant='danger'>ลบ</Button>
 
-                        </td>
-                    </tr>
-                ))}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
+
+            {/* Delete Confirmation Modal */}
+            <Modal show={showDeleteModal} onHide={cancelDelete}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this project?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={cancelDelete}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={confirmDelete}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
         </div>
 
