@@ -267,8 +267,8 @@ const AdminManageProject = () => {
         <div className='mx-auto mt-4 ' style={{ width: '75rem' }}>
             <h3 className='prompt-semibold text-primary mb-4'>จัดการโปรเจคนักศึกษา</h3>
             {alert.show && <Alert variant={alert.variant} onClose={() => setAlert({ show: false, message: '', variant: 'success' })} dismissible>{alert.message}</Alert>}
-            <Button variant="success" onClick={handleChangeStatus} className="mb-3">
-                Apply Changes
+            <Button variant="success" onClick={handleChangeStatus} className="prompt-regular mb-3">
+                บันทึกการเปลี่ยนแปลง
             </Button>
             {/* <Form>
                         <div className='row mt-4'>
