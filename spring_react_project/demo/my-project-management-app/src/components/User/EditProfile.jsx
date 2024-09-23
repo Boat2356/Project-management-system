@@ -15,7 +15,7 @@ const EditProfile = () => {
                 <Form>
                     <Form.Group className=" mb-3" controlId="formBasicEmail">
                         <Form.Label className='prompt-semibold'>รหัสนักศึกษา</Form.Label>
-                        <Form.Control className='prompt-regular' type="email" placeholder="xxxxxxxxx-x" />
+                        <Form.Control className='prompt-regular' type="text" placeholder="xxxxxxxxx-x" />
                     </Form.Group>
 
                     <div className='row'>
