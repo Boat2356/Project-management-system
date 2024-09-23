@@ -1,6 +1,7 @@
 package com.example.demo.model;
 import java.util.HashSet;
 import java.util.Set;
+
 import java.util.Map;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+
 @Entity
 @Table(name = "project")
 public class Project {
@@ -27,8 +29,8 @@ public class Project {
     private int id;
     private String name;
     private String description;
-    @Column(name = "status", columnDefinition = "tinyint(1) default 0")    
-    private int status;
+    @Column(name = "isapproved", columnDefinition = "false")
+    private boolean isapproved = false;
     private int year;
     private int semester;
     private String proposalfilename;

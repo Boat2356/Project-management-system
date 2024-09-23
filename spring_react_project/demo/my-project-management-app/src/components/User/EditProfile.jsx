@@ -2,8 +2,6 @@ import React from 'react'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import NawNavBar from '../../components/User/NewNavBar'
-import StdSideBar from '../../components/User/StdSideBar'
 
 //แก้ไขข้อมูลของนักศึกษา
 const EditProfile = () => {

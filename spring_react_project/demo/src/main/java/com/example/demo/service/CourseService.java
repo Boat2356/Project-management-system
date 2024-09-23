@@ -28,6 +28,7 @@ public class CourseService {
     }
     public Course updateCourse(Course course, int id) {
         Course existingCourse = courseRepository.findById(id).orElse(null);
+        existingCourse.setCourseCode(course.getCourseCode());
         existingCourse.setName(course.getName());
         existingCourse.setDescription(course.getDescription());
         existingCourse.setCredits(course.getCredits());

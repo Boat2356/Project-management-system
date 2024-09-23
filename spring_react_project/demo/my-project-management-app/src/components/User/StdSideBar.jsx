@@ -7,7 +7,7 @@ const StdSideBar = () => {
 
     const isActive = (path) => location.pathname === path; // ตรวจสอบว่า path นั้น active หรือไม่
     return (
-        <div className="sidebar">
+        <div className="sidebar me-3">
         <div className="sidebar-wrapper bg-white shadow p-3 " style={{  height: '120vh', }}>
             <Nav className='d-flex flex-column'>
                 <NavLink 

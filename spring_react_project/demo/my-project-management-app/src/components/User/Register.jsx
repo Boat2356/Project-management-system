@@ -12,7 +12,7 @@ const Register = () => {
     const apiURL = "http://localhost:8080/api/users/register";
 
     const [formData, setFormData] = useState({
-        studenId : "",
+        student_id : "",
         firstName : "",
         lastName : "",
         email : "",
@@ -52,13 +52,13 @@ const Register = () => {
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                 <div className="h4 mb-4 prompt-semibold text-primary">สร้างบัญชี</div>
-                <Form.Group className="prompt-semibold  mb-2" controlId="username">
+                <Form.Group className="prompt-semibold  mb-2">
                     <Form.Label>รหัสนักศึกษา</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="xxxxxxxxx-x"
-                        name="studentId"
-                        value={formData.studentId}
+                        name="student_id"
+                        value={formData.student_id}
                         onChange={handleChange}
                         required
                     />
