@@ -29,8 +29,8 @@ public class Project {
     private int id;
     private String name;
     private String description;
-    @Column(name = "isapproved", columnDefinition = "false")
-    private boolean isapproved = false;
+    @Column(name = "status", columnDefinition = "tinyint(1) default 0")    
+    private int status;
     private int year;
     private int semester;
     private String proposalfilename;
