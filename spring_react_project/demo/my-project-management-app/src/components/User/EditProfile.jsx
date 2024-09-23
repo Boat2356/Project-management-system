@@ -7,7 +7,11 @@ import { getUserById, updateUser } from '../../services/UserService';
 
 //แก้ไขข้อมูลของนักศึกษา
 const EditProfile = () => {
-    const [studentData, setStudentData] = useState(null);
+    const [studentData, setStudentData] = useState({
+        student_id: '',
+        firstName: '',
+        lastName: ''
+    });
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -24,14 +28,18 @@ const EditProfile = () => {
             if (currentUserId) {
                 try {
                     const response = await getUserById(currentUserId);
-                    setStudentData(response.data);
+                    setStudentData({
+                        student_id: response.data.student_id,
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                    });
                 } catch (error) {
-                    setErrorMessage('ไม่สามารถดึงข้อมูลนักศึกษาได้');
+                    setErrorMessage('ไม่สามารถดึงข้อมูลได้');
                 } finally {
                     setLoading(false);
                 }
             } else {
-                setLoading(false); // Set loading to false if no currentUserId
+                setLoading(false);
             }
         };
 
@@ -41,7 +49,12 @@ const EditProfile = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await updateUser(currentUserId, studentData);
+            // await updateUser(currentUserId, studentData);
+            await updateUser(currentUserId, {
+                student_id: studentData.student_id,
+                firstName: studentData.firstName,
+                lastName: studentData.lastName,
+            });
             alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
         } catch (error) {
             setErrorMessage('ไม่สามารถบันทึกข้อมูลได้');
@@ -94,17 +107,6 @@ const EditProfile = () => {
                             />
                         </Form.Group>
                     </div>
-
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label className='prompt-semibold'>อีเมล</Form.Label>
-                        <Form.Control
-                            className='prompt-regular'
-                            type="text"
-                            value={studentData?.email || ''}
-                            onChange={(e) => setStudentData({ ...studentData, email: e.target.value })}
-                            required
-                        />
-                    </Form.Group>
 
                     <Button className='prompt-regular' variant="primary" type="submit">
                         บันทึก

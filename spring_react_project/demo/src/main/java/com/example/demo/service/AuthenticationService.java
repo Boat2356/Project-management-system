@@ -93,7 +93,7 @@ public class AuthenticationService {
         existingUser.setLastName(updatedUser.getLastName());
         //existingUser.setUsername(updatedUser.getUsername());
         existingUser.setStudent_id(updatedUser.getStudent_id());
-        existingUser.setEmail(updatedUser.getEmail());
+        // existingUser.setEmail(updatedUser.getEmail());
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
