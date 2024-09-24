@@ -2,7 +2,8 @@ import { React, useState, useEffect } from "react";
 import { Table, Button, Form, Modal, Alert, Spinner } from "react-bootstrap";
 import { getCourses } from "../../services/CourseService";
 import { getSupervisors } from "../../services/SupervisorService";
-import {  getAllProjects, getProjectById, updateProject, getProjectsByUserId
+import {
+  updateProject, getProjectsByUserId
 } from "../../services/ProjectService";
 import { getUsers } from "../../services/UserService";
 import {
@@ -22,7 +23,7 @@ const StdManageProject = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);   
+  const [isLoading, setIsLoading] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [userData, setUserData] = useState(null);
   const [alert, setAlert] = useState({
@@ -39,7 +40,7 @@ const StdManageProject = () => {
     semester: "",
     status: 0,
     course_code: "",
-    courseId : "",
+    courseId: "",
     supervisorId: "",
     userIds: [],
   });
@@ -53,7 +54,7 @@ const StdManageProject = () => {
     fetchProjects();
     fetchCourses();
     fetchSupervisors();
-    fetchUsers();    
+    fetchUsers();
     getProjectsByUserId(currentUserId);
   }, [currentUserId]);
 
@@ -62,7 +63,7 @@ const StdManageProject = () => {
     if (userData) {
       setCurrentUserId(userData.id); // Assuming the ID is in userData
     }
-  }, []);  
+  }, []);
 
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -125,7 +126,7 @@ const StdManageProject = () => {
       semester: "",
       status: 0,
       course_code: "",
-      courseId : "",
+      courseId: "",
       supervisorId: "",
       userIds: [],
     });
@@ -254,10 +255,6 @@ const StdManageProject = () => {
               <th className="prompt-semibold me-4">รายวิชา</th>
               <th className="prompt-semibold me-4">สถานะ</th>
               <th className="prompt-semibold me-4">Actions</th>
-              <th className="prompt-semibold me-4">ชื่อโปรเจค</th>
-              <th className="prompt-semibold me-4">รายวิชา</th>
-              <th className="prompt-semibold me-4">สถานะ</th>
-              <th className="prompt-semibold me-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -266,15 +263,13 @@ const StdManageProject = () => {
                 <td className="prompt-regular">{project.name}</td>
                 <td className="prompt-regular">{project.course.name}</td>
                 <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
-                <td className="prompt-regular">{project.name}</td>
-                <td className="prompt-regular">{project.course?.name}</td>
-                <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
+
                 <td>
                   <Button
                     variant="info"
                     size="sm"
                     onClick={() => openModal("view", project)}
-                    className='prompt-regular'
+                    className='prompt-regular mx-3'
                   >
                     ดูรายละเอียด
                   </Button>
@@ -451,7 +446,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    ) : file.fileType === "fulldocument" (
+                    ) : file.fileType === "fulldocument" ? (
                       <>
                         <strong>เอกสารเต็ม: </strong>
                         <a
@@ -463,7 +458,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    )}
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -476,30 +471,30 @@ const StdManageProject = () => {
                 {fileMetadata.map((file) => (
                   <li key={file.filePath}>
                     {file.fileType === "proposal" ? (
-                      <>
-                        <strong>เอกสารเค้าโครง: </strong>
-                        <a
-                          href="#"
-                          onClick={() =>
-                            handleFileDownload(file.filePath, file.filename)
-                          }
-                        >
-                          {file.filename}
-                        </a>
-                      </>
-                    ) : file.fileType === "fulldocument" (
-                      <>
-                        <strong>เอกสารเต็ม: </strong>
-                        <a
-                          href="#"
-                          onClick={() =>
-                            handleFileDownload(file.filePath, file.filename)
-                          }
-                        >
-                          {file.filename}
-                        </a>
-                      </>
-                    )}
+  <>
+    <strong>เอกสารเค้าโครง: </strong>
+    <a
+      href="#"
+      onClick={() =>
+        handleFileDownload(file.filePath, file.filename)
+      }
+    >
+      {file.filename}
+    </a>
+  </>
+) : file.fileType === "fulldocument" ? (
+  <>
+    <strong>เอกสารเต็ม: </strong>
+    <a
+      href="#"
+      onClick={() =>
+        handleFileDownload(file.filePath, file.filename)
+      }
+    >
+      {file.filename}
+    </a>
+  </>
+) : null}
                   </li>
                 ))}
               </ul>
