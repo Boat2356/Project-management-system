@@ -49,13 +49,6 @@ const StdManageProject = () => {
     imageFile: null,
   });
 
-  useEffect(() => {
-    fetchProjects();
-    fetchCourses();
-    fetchSupervisors();
-    fetchUsers();    
-    getProjectsByUserId(currentUserId);
-  }, [currentUserId]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("authToken"));
@@ -63,6 +56,13 @@ const StdManageProject = () => {
       setCurrentUserId(userData.id); // Assuming the ID is in userData
     }
   }, []);  
+  
+  useEffect(() => {
+    fetchProjects();
+    fetchCourses();
+    fetchSupervisors();
+    fetchUsers();    
+  }, [currentUserId]);
 
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -254,10 +254,6 @@ const StdManageProject = () => {
               <th className="prompt-semibold me-4">รายวิชา</th>
               <th className="prompt-semibold me-4">สถานะ</th>
               <th className="prompt-semibold me-4">Actions</th>
-              <th className="prompt-semibold me-4">ชื่อโปรเจค</th>
-              <th className="prompt-semibold me-4">รายวิชา</th>
-              <th className="prompt-semibold me-4">สถานะ</th>
-              <th className="prompt-semibold me-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -265,9 +261,6 @@ const StdManageProject = () => {
               <tr key={project.id}>
                 <td className="prompt-regular">{project.name}</td>
                 <td className="prompt-regular">{project.course.name}</td>
-                <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
-                <td className="prompt-regular">{project.name}</td>
-                <td className="prompt-regular">{project.course?.name}</td>
                 <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
                 <td>
                   <Button

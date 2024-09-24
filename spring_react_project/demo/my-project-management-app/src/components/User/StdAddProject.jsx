@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Table, Button, Form, Modal, Alert, Spinner, Card } from 'react-bootstrap';
 import { getSupervisors } from '../../services/SupervisorService';
 import { getCourses } from '../../services/CourseService';
-import { getUsers } from '../../services/UserService';
+import { getUsers, getUserById } from '../../services/UserService';
 import { getFileMetadata, downloadFile, createProject } from '../../services/ProjectService';
 import Select from 'react-select';
 
@@ -37,7 +37,21 @@ const StdAddProject = () => {
         fetchCourses();
         fetchSupervisors();
         fetchUsers();
+        fetchCurrentUser(); // Fetch current user
     }, []);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const currentUserId = JSON.parse(localStorage.getItem("authToken"));
+            const response = await getUserById(currentUserId);
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                userIds: [...prevFormData.userIds, response.data.id] // Add current user ID to userIds
+            }));
+        } catch (error) {
+            console.error('Error fetching current user:', error);
+        }
+    };
 
     const fetchCourses = async () => {
         try {
