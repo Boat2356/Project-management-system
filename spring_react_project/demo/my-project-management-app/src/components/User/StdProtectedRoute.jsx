@@ -10,7 +10,7 @@ const StdProtectedRoute = ({ children }) => {
   
       // ถ้า role ไม่ใช่ STUDENT ให้ redirect ไปหน้าอื่น
       if (role !== "USER") {
-        navigate("/home-page");
+        navigate("/");
       }
     }, [navigate]);
   

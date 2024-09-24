@@ -25,7 +25,7 @@ const StdAddProject = () => {
         status: 0,
         courseId: '',
         supervisorId: '',
-        userIds: [],
+        userIds: []
     });
     const [files, setFiles] = useState({
         proposalFile: null,
@@ -104,7 +104,7 @@ const StdAddProject = () => {
             status: 0,
             courseId: '',
             supervisorId: '',
-            userIds: [],
+            userIds: []
         });
         setFiles({
             proposalFile: null,
@@ -119,6 +119,7 @@ const StdAddProject = () => {
     };
 
     const handleCreate = async () => {
+        event.preventDefault(); // Prevent default form submission
         setIsLoading(true);
         try {
             await createProject(formData, files);

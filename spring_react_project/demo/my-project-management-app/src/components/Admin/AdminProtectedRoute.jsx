@@ -10,7 +10,7 @@ const AdminProtectedRoute = ({ children }) => {
   
       // ถ้า role ไม่ใช่ ADMIN ให้ redirect ไปหน้าอื่น
       if (role !== "ADMIN") {
-        navigate("/home-page");
+        navigate("/");
       }
     }, [navigate]);
   

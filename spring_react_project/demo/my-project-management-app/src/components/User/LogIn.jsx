@@ -34,7 +34,7 @@ const LogIn = () => {
       setLoading(false);
 
       // Navigate based on user role
-      navigate(userData.role === "ADMIN" ? "/admin/profile" : "/home-page");
+      navigate(userData.role === "ADMIN" ? "/admin/profile" : "/");
     } catch (error) {
       setLoading(false);
       setErrorMessage("อีเมลหรือรหัสผ่านไม่ถูกต้อง โปรดลองใหม่");

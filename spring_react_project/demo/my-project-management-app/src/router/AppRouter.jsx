@@ -32,7 +32,7 @@ function AppRouter(){
             <Route path="/admin/supervisor-crud" element = {<SupervisorPage />} />
             <Route path="/admin/user-crud" element = {<UserPageAdmin />} />
 
-            <Route path="/home-page" element = {<HomePage />} /> 
+            <Route path="/" element = {<HomePage />} /> 
             <Route path="/search" element= {<SearchProjectPage/>}/>
             <Route path="/results" element = {<SearchResultPage/>} />
             <Route path="/projects/:id" element = {<ProjectDetailPage/>} />

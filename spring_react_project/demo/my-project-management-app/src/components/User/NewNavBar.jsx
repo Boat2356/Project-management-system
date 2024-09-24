@@ -34,7 +34,7 @@ const NewNavBar = () => {
       <Navbar expand="lg" className="p-3 bg-white text-dark shadow-sm ">
         <Container>
           <div>
-            <Navbar.Brand href="/home-page">
+            <Navbar.Brand href="/">
               <span className="text-primary fw-bold fs-3">S</span>{" "}
               <span className="fw-bold">- project</span>
             </Navbar.Brand>
@@ -46,7 +46,7 @@ const NewNavBar = () => {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="">
                 <Nav.Link
-                  href="/home-page"
+                  href="/"
                   className="prompt-semibold pt-3 fw-bold"
                 >
                   หน้าหลัก
