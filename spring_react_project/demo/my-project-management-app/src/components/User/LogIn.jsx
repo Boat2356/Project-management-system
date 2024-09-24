@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { loginUser } from "../../services/UserService";
 
 const LogIn = () => {
   const [inputUsername, setInputUsername] = useState("");
@@ -10,7 +10,6 @@ const LogIn = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const apiURL = "http://localhost:8080/api/users/login";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +17,7 @@ const LogIn = () => {
     setErrorMessage("");
     setIsLoggedIn(false);
     try {
-      const response = await axios.post(apiURL, {
+      const response = await loginUser({
         email: inputUsername,
         password: inputPassword,
       });
@@ -37,7 +36,6 @@ const LogIn = () => {
       // Navigate based on user role
       navigate(userData.role === "ADMIN" ? "/admin/profile" : "/home-page");
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
       setLoading(false);
       setErrorMessage("อีเมลหรือรหัสผ่านไม่ถูกต้อง โปรดลองใหม่");
     }
@@ -52,7 +50,7 @@ const LogIn = () => {
         <div className="h4 mb-4 prompt-semibold text-primary">เข้าสู่ระบบ</div>
         {errorMessage && (
           <Alert
-            className="mb-2"
+            className="prompt-regular mb-2"
             variant="danger"
             onClose={() => setErrorMessage("")}
             dismissible

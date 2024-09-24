@@ -254,6 +254,10 @@ const StdManageProject = () => {
               <th className="prompt-semibold me-4">รายวิชา</th>
               <th className="prompt-semibold me-4">สถานะ</th>
               <th className="prompt-semibold me-4">Actions</th>
+              <th className="prompt-semibold me-4">ชื่อโปรเจค</th>
+              <th className="prompt-semibold me-4">รายวิชา</th>
+              <th className="prompt-semibold me-4">สถานะ</th>
+              <th className="prompt-semibold me-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -261,6 +265,9 @@ const StdManageProject = () => {
               <tr key={project.id}>
                 <td className="prompt-regular">{project.name}</td>
                 <td className="prompt-regular">{project.course.name}</td>
+                <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
+                <td className="prompt-regular">{project.name}</td>
+                <td className="prompt-regular">{project.course?.name}</td>
                 <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
                 <td>
                   <Button
@@ -359,7 +366,7 @@ const StdManageProject = () => {
                 onChange={handleInputChange}
                 disabled={modalMode === "view"}
               >
-                <option value="">Select Supervisor</option>
+                <option value="">เลือกอาจารย์ที่ปรึกษา</option>
                 {supervisors.map((supervisor) => (
                   <option key={supervisor.id} value={supervisor.id}>
                     {supervisor.name}
@@ -444,7 +451,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    ) : file.fileType === "fulldocument" ? (
+                    ) : file.fileType === "fulldocument" (
                       <>
                         <strong>เอกสารเต็ม: </strong>
                         <a
@@ -456,7 +463,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    ) :  null}
+                    )}
                   </li>
                 ))}
               </ul>
@@ -480,7 +487,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    ) : file.fileType === "fulldocument" ? (
+                    ) : file.fileType === "fulldocument" (
                       <>
                         <strong>เอกสารเต็ม: </strong>
                         <a
@@ -492,7 +499,7 @@ const StdManageProject = () => {
                           {file.filename}
                         </a>
                       </>
-                    ) : null}
+                    )}
                   </li>
                 ))}
               </ul>
