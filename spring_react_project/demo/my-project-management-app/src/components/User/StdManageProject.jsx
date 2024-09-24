@@ -64,6 +64,14 @@ const StdManageProject = () => {
       setCurrentUserId(userData.id); // Assuming the ID is in userData
     }
   }, []);
+   
+  
+  useEffect(() => {
+    fetchProjects();
+    fetchCourses();
+    fetchSupervisors();
+    fetchUsers();    
+  }, [currentUserId]);
 
   const fetchProjects = async () => {
     setIsLoading(true);
