@@ -45,7 +45,6 @@ const StdProfile = () => {
   }
   return (
     <>
-      {currentUserId ? (
         <Card
           className="mx-auto mt-4 shadow-sm p-4"
           style={{ width: "80rem", height: "13rem" }}
@@ -74,9 +73,6 @@ const StdProfile = () => {
             </div>
           </Card.Body>
         </Card>
-      ) : (
-        <p>กรุณาเข้าสู่ระบบ</p>
-      )}
     </>
   );
 };
