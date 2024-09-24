@@ -53,7 +53,7 @@ public class Project {
 
     //@JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_code", referencedColumnName = "id")
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;    
     /* 
     @Transient

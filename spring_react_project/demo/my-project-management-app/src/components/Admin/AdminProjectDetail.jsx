@@ -234,7 +234,7 @@ const AdminProjectDetail = () => {
                         <div className="col-sm-8">
                             <Form.Control
                                 as="select"
-                                name="course_code"
+                                name="courseId"
                                 value={project.course.id}
                                 onChange={handleChange}
                                 className="prompt-regular"

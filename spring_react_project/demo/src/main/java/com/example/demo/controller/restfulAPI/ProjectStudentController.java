@@ -16,7 +16,7 @@ import com.example.demo.model.ProjectStudent;
 import com.example.demo.service.ProjectStudentService;
 
 @RestController
-@RequestMapping("/api/project-students")
+@RequestMapping("/api/project-users")
 public class ProjectStudentController {
     @Autowired
     private ProjectStudentService projectStudentService;
@@ -26,14 +26,14 @@ public class ProjectStudentController {
         ProjectStudent projectStudent = projectStudentService.addProjectStudent(projectId, studentId);
         return ResponseEntity.ok(projectStudent);
     }
-    @GetMapping("/project/{projectId}")
-    public ResponseEntity<Set<ProjectStudent>> getProjectStudentsByProjectId(@PathVariable int projectId) {
-        Set<ProjectStudent> projectStudents = projectStudentService.getProjectStudentsByProjectId(projectId);
+    @GetMapping("/projects/{projectId}")
+    public ResponseEntity<Set<ProjectStudent>> getProjectUsersByProjectId(@PathVariable int projectId) {
+        Set<ProjectStudent> projectStudents = projectStudentService.getProjectUsersByProjectId(projectId);
         return ResponseEntity.ok(projectStudents);
     }
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<Set<ProjectStudent>> getProjectStudentsByStudentId(@PathVariable int studentId) {
-        Set<ProjectStudent> projectStudents = projectStudentService.getProjectStudentsByStudentId(studentId);
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<Set<ProjectStudent>> getProjectUsersByStudentId(@PathVariable int userId) {
+        Set<ProjectStudent> projectStudents = projectStudentService.getProjectUsersByUserId(userId);
         return ResponseEntity.ok(projectStudents);
     }
     @DeleteMapping("/{id}")

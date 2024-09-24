@@ -66,7 +66,8 @@ const StdAddProject = () => {
     const fetchUsers = async () => {
         try {
             const response = await getUsers();
-            setUsers(response.data);
+            const filteredUsers = response.data.filter(user => user.role === 'USER');
+            setUsers(filteredUsers);
         } catch (error) {
             console.error('Error fetching users:', error);
         }

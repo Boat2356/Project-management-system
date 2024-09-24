@@ -54,9 +54,9 @@ public class ProjectController {
         .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/course/{course_code}/projects/{projectId}")
-    public ResponseEntity<Project> getProjectsByCourseCode(@PathVariable int course_code, @PathVariable int projectId) {
-        return ResponseEntity.ok().body(courseService.getCourseById(course_code).getProjects()
+    @GetMapping("/course/{courseId}/projects/{projectId}")
+    public ResponseEntity<Project> getProjectsByCourseCode(@PathVariable int courseId, @PathVariable int projectId) {
+        return ResponseEntity.ok().body(courseService.getCourseById(courseId).getProjects()
                 .stream().filter(project -> project.getId() == projectId).findFirst().orElse(null));
     }
 
@@ -70,14 +70,14 @@ public class ProjectController {
     @PostMapping(value = "/projects", consumes = {
             MediaType.MULTIPART_FORM_DATA_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> createProject(@RequestPart("project") Project project,
-            @RequestParam("course_code") int course_code,
+            @RequestParam("courseId") int courseId,
             @RequestParam("supervisorId") int supervisorId,
             @RequestParam("userIds") List<Integer> userIds,
             @RequestParam(value = "proposalFile", required = false) MultipartFile proposalFile,
             @RequestParam(value = "fullDocumentFile", required = false) MultipartFile fullDocumentFile,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
         try {
-            Project savedProject = projectService.createProjectWithFiles(project, course_code, supervisorId, userIds,
+            Project savedProject = projectService.createProjectWithFiles(project, courseId, supervisorId, userIds,
                     proposalFile, fullDocumentFile, imageFile);
             return ResponseEntity.ok(savedProject);
         } catch (RuntimeException e) {
@@ -90,7 +90,7 @@ public class ProjectController {
     @PutMapping(value = "/projects/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> updateProject(@PathVariable int projectId,
             @RequestPart("project") Project project,
-            @RequestParam("course_code") int course_code,
+            @RequestParam("courseId") int courseId,
             @RequestParam("supervisorId") int supervisorId,
             @RequestParam("userIds") List<Integer> userIds,
             @RequestParam(value = "proposalFile", required = false) MultipartFile proposalFile,
@@ -98,7 +98,7 @@ public class ProjectController {
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
 
         try {
-            Project updatedProject = projectService.updateProjectWithFiles(project, projectId, course_code, supervisorId,
+            Project updatedProject = projectService.updateProjectWithFiles(project, projectId, courseId, supervisorId,
                     userIds,
                     proposalFile, fullDocumentFile, imageFile);
             return ResponseEntity.ok(updatedProject);
@@ -256,6 +256,16 @@ public class ProjectController {
         if (year != null) {
             projects = projects.stream().filter(project -> project.getYear() == year).toList();
         }
+        if(projects.isEmpty()) {
+            return ResponseEntity.status(404).body(projects);
+        }
+        return ResponseEntity.ok(projects);
+    }
+
+    // get multiple projects by user id
+    @GetMapping("/projects/user/{userId}")
+    public ResponseEntity<List<Project>> getProjectsByUserId(@PathVariable int userId) {
+        List<Project> projects = projectService.getProjectsByUserIds(List.of(userId));
         if(projects.isEmpty()) {
             return ResponseEntity.status(404).body(projects);
         }

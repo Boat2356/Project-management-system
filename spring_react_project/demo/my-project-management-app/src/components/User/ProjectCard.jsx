@@ -16,7 +16,8 @@ const ProjectCard = () => {
     const fetchProjects = async () => {
       try {
           const response = await getAllProjects();
-          setProjects(response.data);
+          const filteredProjects = response.data.filter(project => project.status === 1);
+          setProjects(filteredProjects);
       } catch (error) {
           console.error('Error fetching projects:', error);
       }
@@ -75,6 +76,7 @@ const truncateText = (text, maxLength) => {
               <Card className="mb-4 mt-4">
                 <Card.Body>
                   <Card.Title className='prompt-semibold'>{project.name}</Card.Title>
+                  <hr />
                   <Card.Text className='prompt-regular'>
                     {truncateText(project.description, 100)} {/* Limit description to 100 characters */}
                   </Card.Text>

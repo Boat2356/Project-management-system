@@ -2,17 +2,16 @@ import { React, useState, useEffect } from "react";
 import { Table, Button, Form, Modal, Alert, Spinner } from "react-bootstrap";
 import { getCourses } from "../../services/CourseService";
 import { getSupervisors } from "../../services/SupervisorService";
-import {
-  getAllProjects,
-  getProjectById,
-  updateProject
+import {  getAllProjects, getProjectById, updateProject, getProjectsByUserId
 } from "../../services/ProjectService";
 import { getUsers } from "../../services/UserService";
 import {
   getFileMetadata,
   downloadFile
 } from "../../services/ProjectService";
+import { getProjectUsersByUserId } from "../../services/ProjectUserService";
 import Select from "react-select";
+import { useParams } from "react-router-dom";
 
 //จัดการโปรเจคสำหรับนักศึกษา
 const StdManageProject = () => {
@@ -23,7 +22,9 @@ const StdManageProject = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);   
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [alert, setAlert] = useState({
     show: false,
     message: "",
@@ -38,6 +39,7 @@ const StdManageProject = () => {
     semester: "",
     status: 0,
     course_code: "",
+    courseId : "",
     supervisorId: "",
     userIds: [],
   });
@@ -51,17 +53,25 @@ const StdManageProject = () => {
     fetchProjects();
     fetchCourses();
     fetchSupervisors();
-    fetchUsers();
-  }, []);
+    fetchUsers();    
+    getProjectsByUserId(currentUserId);
+  }, [currentUserId]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("authToken"));
+    if (userData) {
+      setCurrentUserId(userData.id); // Assuming the ID is in userData
+    }
+  }, []);  
 
   const fetchProjects = async () => {
     setIsLoading(true);
     try {
-      const response = await getAllProjects();
+      const response = await getProjectsByUserId(currentUserId);
       setProjects(response.data);
     } catch (error) {
-      console.error("Error fetching projects:", error);
-      showAlert("Error fetching projects", "danger");
+      //console.error("Error fetching projects:", error);
+      //showAlert("Error fetching projects", "danger");
     }
     setIsLoading(false);
   };
@@ -87,7 +97,8 @@ const StdManageProject = () => {
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      setUsers(response.data);
+      const filteredUsers = response.data.filter((user) => user.role === "USER");
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -114,6 +125,7 @@ const StdManageProject = () => {
       semester: "",
       status: 0,
       course_code: "",
+      courseId : "",
       supervisorId: "",
       userIds: [],
     });
@@ -157,7 +169,8 @@ const StdManageProject = () => {
         year: project.year,
         semester: project.semester,
         status: project.status,
-        course_code: project.course.id,
+        course_code: project.course.course_code,
+        courseId: project.course.id,
         supervisorId: project.supervisor.id,
         userIds: project.projectStudents.map((ps) => ps.user.id),
       });
@@ -237,18 +250,18 @@ const StdManageProject = () => {
         <Table>
           <thead>
             <tr>
-              <th className="prompt-semibold me-4 d-inline">ชื่อโปรเจค</th>
-              <th className="prompt-semibold me-4 d-inline">รายวิชา</th>
-              <th className="prompt-semibold me-4 d-inline">สถานะ</th>
-              <th className="prompt-semibold me-4 d-inline">Actions</th>
+              <th className="prompt-semibold me-4">ชื่อโปรเจค</th>
+              <th className="prompt-semibold me-4">รายวิชา</th>
+              <th className="prompt-semibold me-4">สถานะ</th>
+              <th className="prompt-semibold me-4">Actions</th>
             </tr>
           </thead>
           <tbody>
             {projects.map((project) => (
               <tr key={project.id}>
-                <td className="prompt-regular d-inline">{project.name}</td>
-                <td className="prompt-regular d-inline">{project.course?.name}</td>
-                <td className="prompt-semibold text-success-emphasis d-inline">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
+                <td className="prompt-regular">{project.name}</td>
+                <td className="prompt-regular">{project.course.name}</td>
+                <td className="prompt-semibold text-success-emphasis">{project.status === 1 ? "อนุมัติ" : "กำลังพิจารณา"}</td>
                 <td>
                   <Button
                     variant="info"
@@ -325,8 +338,8 @@ const StdManageProject = () => {
             <Form.Group className="mb-3">
               <Form.Label>รายวิชา</Form.Label>
               <Form.Select
-                name="course_code"
-                value={formData.course_code}
+                name="courseId"
+                value={formData.courseId}
                 onChange={handleInputChange}
                 disabled={modalMode === "view"}
               >

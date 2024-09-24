@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -56,11 +59,11 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public Project createProjectWithFiles(Project project, int course_code, int supervisorId, 
+    public Project createProjectWithFiles(Project project, int courseId, int supervisorId, 
                                           List<Integer> userIds, MultipartFile proposalFile, 
                                           MultipartFile fullDocumentFile, MultipartFile imageFile) 
                                           throws IOException {
-        Course course = courseRepository.findById(course_code).orElseThrow(null);
+        Course course = courseRepository.findById(courseId).orElseThrow(null);
         Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);          
         project.setCourse(course);
         project.setSupervisor(supervisor);      
@@ -93,7 +96,7 @@ public class ProjectService {
         return savedProject;
     }
 
-    public Project updateProjectWithFiles(Project project, int id, int course_code, int supervisorId, 
+    public Project updateProjectWithFiles(Project project, int id, int courseId, int supervisorId, 
                                           List<Integer> userIds, MultipartFile proposalFile, 
                                           MultipartFile fullDocumentFile, MultipartFile imageFile) 
                                           throws IOException {
@@ -103,7 +106,7 @@ public class ProjectService {
         existingProject.setStatus(project.getStatus());
         existingProject.setYear(project.getYear());
         existingProject.setSemester(project.getSemester());
-        Course course = courseRepository.findById(course_code).orElseThrow(null);
+        Course course = courseRepository.findById(courseId).orElseThrow(null);
         Supervisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(null);
         existingProject.setCourse(course);
         existingProject.setSupervisor(supervisor);
@@ -175,10 +178,10 @@ public class ProjectService {
     public void deleteProjectById(int id) {
         projectRepository.deleteById(id);        
     }
-    public Project deleteProject(int projectId,int supervisorId,int course_code) {
+    public Project deleteProject(int projectId,int supervisorId,int courseId) {
         Optional<Project> project = projectRepository.findById(projectId);
         Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-        Optional<Course> course = courseRepository.findById(course_code);
+        Optional<Course> course = courseRepository.findById(courseId);
         if(project.isPresent() && supervisor.isPresent() && course.isPresent()){
             projectRepository.deleteById(projectId);
             return project.get();
@@ -364,5 +367,16 @@ public class ProjectService {
         }
         return (List<Project>) projectRepository.saveAll(projects);
     }    
+
+    // get multiple projects by their user ids
+    public List<Project> getProjectsByUserIds(List<Integer> userIds) {
+        List<Project> projects = new ArrayList<>();
+        for (Integer userId : userIds) {
+            User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            projects.addAll(user.getProjectStudents().stream().map(ProjectStudent::getProject).collect(Collectors.toList()));
+        }
+        return projects;
+    }
+
 
 }

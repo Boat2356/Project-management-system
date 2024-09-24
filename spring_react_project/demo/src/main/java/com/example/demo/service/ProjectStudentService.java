@@ -48,7 +48,7 @@ public class ProjectStudentService {
         projectStudentRepository.deleteById(projectStudentId);
     }
 
-    public Set<ProjectStudent> getProjectStudentsByProjectId(int projectId) {
+    public Set<ProjectStudent> getProjectUsersByProjectId(int projectId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
         if (projectOpt.isPresent()) {
             return projectOpt.get().getProjectStudents().stream().map(
@@ -64,7 +64,7 @@ public class ProjectStudentService {
             throw new RuntimeException("Project not found");
         }
     }
-    public Set<ProjectStudent> getProjectStudentsByStudentId(int userId) {
+    public Set<ProjectStudent> getProjectUsersByUserId(int userId) {
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isPresent()) {
             return userOpt.get().getProjectStudents();
